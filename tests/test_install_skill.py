@@ -57,7 +57,8 @@ class InstallSkillTests(unittest.TestCase):
             (self.source / name / "data.txt").write_text("local state")
         result = self.run_cli()
         self.assertEqual(result.returncode, 0, result.stderr)
-        copied = sorted(str(path.relative_to(self.destination)) for path in self.destination.rglob("*") if path.is_file())
+        copied = sorted(path.relative_to(self.destination).as_posix()
+                        for path in self.destination.rglob("*") if path.is_file())
         self.assertEqual(copied, ["SKILL.md", "references/guide.md"])
         self.assertEqual((self.destination / "references/guide.md").read_text(), "Example reference\n")
 
