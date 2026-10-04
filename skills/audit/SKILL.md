@@ -1,9 +1,9 @@
 ---
-name: audit-project
+name: audit
 description: Audit a project (remote URL or local workspace) and its source code against user goals, domain requirements, and production risks; discuss findings one at a time and commit detailed implementation plans for local agents. Use for end-to-end project audits, architecture or product-value critiques, deep code reviews, missing-capability investigations, and incremental audit follow-ups. Covers defects, improvements, minor alignment issues, and major redesigns with evidence, priority, decisions, dependencies, and verification. Do not use as an implementation agent or for configuring AI agents themselves.
 ---
 
-# Audit Project
+# Audit
 
 Turn a repository and a focus into verified findings, explicit user decisions, and executable plans. Optimize useful accepted outcomes per token and elapsed time. Spend reasoning on domain understanding, causal diagnosis, and implementation detail; keep chat brief. Do not equate a long report, large refactor, or many findings with value.
 

@@ -148,7 +148,7 @@ For a field that truly does not apply, explain why; do not pad small changes.
 
 ## Validation and its limits
 
-Run `python /path/to/audit-project/scripts/validate_audit.py docs/audit`.
+Run `python /path/to/audit/scripts/validate_audit.py docs/audit`.
 Exit 0 means structurally valid; exit 1 means invalid. Output is bounded to forty
 diagnostics plus an omitted count. Input files must be UTF-8 and at most 2 MiB each.
 Paths use forward slashes, stay within the audit root after symlink resolution,

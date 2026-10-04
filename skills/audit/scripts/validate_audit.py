@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only structural checks for an Audit Project bundle; Python 3.10+."""
+"""Read-only structural checks for an Audit bundle; Python 3.10+."""
 
 import argparse
 from collections import deque
