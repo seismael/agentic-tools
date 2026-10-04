@@ -1,0 +1,6 @@
+interface:
+  display_name: "Enhance"
+  short_description: "Improve agent performance and cost from session evidence"
+  default_prompt: "Use $enhance to review unprocessed sessions, prioritize performance and cost effectiveness, and propose scoped native improvements."
+  icon_small: "assets/icon.svg"
+  icon_large: "assets/icon.svg"

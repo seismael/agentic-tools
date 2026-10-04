@@ -1,0 +1,6 @@
+interface:
+  display_name: "Characterize"
+  short_description: "Build efficient native agent setups across tools"
+  default_prompt: "Use $characterize to assess my goals and native agent setup, ask only consequential questions, and propose efficient scoped changes."
+  icon_small: "assets/icon.svg"
+  icon_large: "assets/icon.svg"
