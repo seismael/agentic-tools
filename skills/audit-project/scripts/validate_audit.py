@@ -123,6 +123,9 @@ def sections(nodes):
 def repository_url(value):
     if not nonempty(value) or any(c.isspace() or not c.isprintable() for c in value):
         return False
+    # Agnostic: Accept local relative or absolute paths for local workspaces
+    if value == "." or value.startswith("/") or value.startswith("file://") or (len(value) > 1 and value[1] == ":"):
+        return True
     try:
         url = urlsplit(value)
         if (url.scheme != "https" or not url.hostname or "@" in url.netloc
@@ -381,7 +384,7 @@ class Validator:
         if type(data.get("version")) is not int or data["version"] != 2:
             self.error("version must be integer 2; version 1 bundles require explicit revalidation before conversion")
         if not repository_url(data.get("repository")):
-            self.error("repository must be an HTTPS GitHub repository URL (public or enterprise)")
+            self.error("repository must be an HTTPS repository URL or a valid local path")
         commit = data.get("baseline_commit")
         if not isinstance(commit, str) or not re.fullmatch(r"[0-9a-fA-F]{40}", commit):
             self.error("baseline_commit must be a full 40-character Git commit SHA")

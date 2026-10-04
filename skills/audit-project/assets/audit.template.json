@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "repository": "https://github.com/AUDIT_TODO_ME/AUDIT_TODO_ME",
+  "repository": "https://github.com/AUDIT_TODO_ME/AUDIT_TODO_ME_OR_LOCAL_PATH",
   "baseline_commit": "AUDIT_TODO_ME_WITH_FULL_REVIEWED_COMMIT_SHA",
   "focus": "AUDIT_TODO_ME_WITH_USER_FOCUS_AND_SCOPE",
   "coverage": [
