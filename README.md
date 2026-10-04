@@ -56,7 +56,7 @@ A globally installed skill can still propose a project-only change. Shared team 
 
 ## Status and limits
 
-The packages follow the directory-based Agent Skills format. Installation locations are checked against official documentation; see [Compatibility](docs/COMPATIBILITY.md). Local automated checks exercise the installer, metadata ledger, and configuration change bundle without calling models; see [Validation](docs/VALIDATION.md) for results. Live target CLI checks and the updated remote CI matrix remain pending. Representative instruction scenarios do not certify runtime enforcement or model behavior.
+The packages follow the directory-based Agent Skills format. Installation locations are checked against official documentation; see [Compatibility](docs/COMPATIBILITY.md). Local automated checks exercise the installer, metadata ledger, and configuration change bundle without calling models; see [Validation](docs/VALIDATION.md) for results. Cross-platform CI passes on Windows, macOS, and Linux. Live target CLI checks remain pending. Representative instruction scenarios do not certify runtime enforcement or model behavior.
 
 History access, permissions, native capabilities, and telemetry depend on the installed host/version. Missing evidence stays explicit. Measured savings require comparable real usage data; the skill does not guarantee a fixed saving or unlimited autonomous permissions.
 

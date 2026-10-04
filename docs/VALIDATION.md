@@ -13,7 +13,7 @@ python -B -m unittest discover -s tests -p 'test_*.py' -v
 
 Tests use temporary directories and synthetic data; they make no model calls, change no real agent settings, and activate no hooks. GitHub Actions is configured to run these commands on Windows, macOS, and Linux. A configured workflow is not evidence that its remote run passed; inspect the actual run after publishing.
 
-Current evidence: 44 automated tests passed locally: 23 Characterize change-bundle tests, 11 Enhance ledger tests, and 10 installer tests. Live target CLI integration and the updated remote matrix remain pending. Instruction scenarios are a separate evidence level and cannot certify runtime policy enforcement.
+Current evidence: 44 automated tests passed locally: 23 Characterize change-bundle tests, 11 Enhance ledger tests, and 10 installer tests. The [successful cross-platform run](https://github.com/seismael/agentic-tools/actions/runs/37195311391) for commit `648d407c30874ef9aec771cf9c6f1387b797f347` passed Ubuntu/Python 3.10, Ubuntu/Python 3.13, macOS/Python 3.13, and Windows/Python 3.13 on 2026-10-04. Platform-specific skips follow the tests; live target CLI integration remains pending. Instruction scenarios are a separate evidence level and cannot certify runtime policy enforcement.
 
 Characterize helper coverage includes exact-byte/mode restoration, created files, scope/path restrictions, digest mismatch, content and permission drift, malformed input, bundle limits, interrupted apply/rollback, and preserving later edits. It does not validate target configuration semantics, prove approval, or guarantee an atomic multi-file transaction.
 

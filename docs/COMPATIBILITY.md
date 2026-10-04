@@ -12,7 +12,7 @@ Documentation checked: **2026-10-04**. This table applies to both Characterize a
 | Antigravity IDE | Same canonical format; different global root from the CLI. | Not run in the IDE. |
 | Other Agent Skills hosts | Common-format candidate; verify host metadata, discovery, tools, and permissions. | Unverified. |
 
-The development environment did not provide these local CLI executables. Automated tests passed locally as recorded in [Validation](VALIDATION.md); the updated remote CI matrix has not been observed. Helper tests and instruction scenarios do not substitute for testing a host's discovery, effective configuration, permissions, or model behavior.
+The development environment did not provide these local CLI executables. Automated tests passed locally and in the Windows/macOS/Linux CI matrix, as recorded in [Validation](VALIDATION.md). Helper tests and instruction scenarios do not substitute for testing a host's discovery, effective configuration, permissions, or model behavior.
 
 ## Portable contract
 
