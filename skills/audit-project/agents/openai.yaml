@@ -1,0 +1,14 @@
+interface:
+  display_name: Audit Project
+  short_description: Deep project audits and actionable implementation plans
+  default_prompt: Use $audit-project to audit a GitHub repository against my focus,
+    discuss findings one at a time, and commit detailed implementation plans.
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true

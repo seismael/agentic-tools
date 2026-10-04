@@ -8,14 +8,15 @@ Portable skills for making AI agents more effective, reliable, and economical th
 |---|---|
 | [Characterize](skills/characterize/SKILL.md) | Translate goals, domains, workflows, and constraints into a minimal native setup; interview only where evidence leaves consequential choices unresolved. |
 | [Enhance](skills/enhance/SKILL.md) | Learn from actual sessions, diagnose wasted effort, and improve native settings and workflows at the correct global, project, agent, or task scope. |
+| [Audit Project](skills/audit-project/SKILL.md) | Audit a GitHub project against its goals and domain, resolve findings with the user one at a time, and commit evidence-backed implementation plans for local agents. |
 
 Use Characterize to establish or revise a setup from current needs. Use Enhance to improve it from actual session evidence. Each works independently; when useful, carry forward a compact private profile and approved scope.
 
-Both prioritize performance and cost effectiveness: useful completed work per input/output consumption, total cost, and elapsed time, while preserving required correctness and reliability. They support research, writing, analysis, design, operations, and engineering.
+All prioritize performance and cost effectiveness: useful completed work per input/output consumption, total cost, and elapsed time, while preserving required correctness and reliability. They support research, writing, analysis, design, operations, and engineering. Audit Project evaluates the project itself; Characterize and Enhance improve the agent setup and its usage.
 
 ## Install a skill
 
-Clone this repository or download its source. Copy the **whole** `skills/characterize/` or `skills/enhance/` directory into one supported skill location. Do not copy only `SKILL.md`, and do not install duplicate copies into locations the same agent scans.
+Clone this repository or download its source. Copy the **whole** selected directory under `skills/` into one supported skill location. Do not copy only `SKILL.md`, and do not install duplicate copies into locations the same agent scans.
 
 With Python 3.10 or newer, the optional installer works on Windows, macOS, and Linux and refuses to overwrite an existing destination:
 
@@ -26,11 +27,11 @@ python tools/install_skill.py --skill characterize --to ~/.agents/skills/charact
 python tools/install_skill.py --skill characterize --to ~/.agents/skills/characterize
 ```
 
-The shared installer accepts either skill: replace `characterize` with `enhance` in both arguments to install Enhance. The example uses Codex's documented user skill directory. See [Installation](docs/INSTALLATION.md) for OpenCode, Claude Code, Gemini CLI, Antigravity CLI (`agy`), and Antigravity IDE. Python is optional for the instruction workflow; the installer and bundled helpers require it.
+The shared installer accepts any bundled skill: replace `characterize` with `enhance` or `audit-project` in both arguments. The example uses Codex's documented user skill directory. See [Installation](docs/INSTALLATION.md) for OpenCode, Claude Code, Gemini CLI, Antigravity CLI (`agy`), and Antigravity IDE. Python is optional for the instruction workflow; the installer and bundled helpers require it.
 
 ## Use it
 
-Select the skill using your host's native control. In Codex CLI, use `$characterize` or `$enhance`; in Claude Code and Antigravity CLI, use `/characterize` or `/enhance`. In OpenCode or Gemini CLI, explicitly request the named skill in your prompt and verify discovery through the native skill interface.
+Select the skill using your host's native control. In Codex CLI, use `$characterize`, `$enhance`, or `$audit-project`; in Claude Code and Antigravity CLI, use `/characterize`, `/enhance`, or `/audit-project`. In OpenCode or Gemini CLI, explicitly request the named skill in your prompt and verify discovery through the native skill interface.
 
 Example requests:
 
@@ -42,9 +43,11 @@ Example requests:
 
 > Use Enhance for this project only. Investigate repeated research and reviewer work, propose clear role ownership and compact handoffs, and preserve our deliverable requirements.
 
+> Use Audit Project on https://github.com/OWNER/PROJECT. Focus on whether its data-import pipeline reliably fulfills the product's goals, including architecture, correctness, performance, tests, and small inconsistencies. Trace the implementation and check domain assumptions. Discuss findings with me one at a time, recommend an approach, and record accepted, deferred, and rejected decisions. Commit the audit and detailed implementation plans under docs/audit/ using the repository's supported review workflow. Do not implement product changes.
+
 The host agent performs the work with its existing model and authorized tools. These skills are not separate agent runtimes, universal history connectors, background services, or model subscriptions.
 
-## What happens
+## Agent setup and improvement
 
 1. Discover the actual target tool/version, relevant evidence, native settings, configuration precedence, and prior checkpoints.
 2. Characterize resolves goals, representative tasks, and consequential setup choices. Enhance reviews sessions individually and incrementally, including reopened sessions and late imports.
@@ -54,9 +57,19 @@ The host agent performs the work with its existing model and authorized tools. T
 
 A globally installed skill can still propose a project-only change. Shared team requirements, private project preferences, native global defaults, role-specific behavior, and temporary task constraints remain distinct. Storage location alone does not determine applicability.
 
+## Project audits and implementation handoffs
+
+Audit Project requires a GitHub repository URL and focus message. It records a frozen source baseline, establishes project goals and domain assumptions, and traces relevant execution paths before treating a suspicion as a finding. Its coverage record distinguishes reviewed, pending, unavailable, and inapplicable areas; a focused or unfinished review is not presented as exhaustive.
+
+Each finding receives separate impact, priority, confidence, effort, and dependency information. The agent asks about one finding at a time, offers a recommended resolution with alternatives and custom feedback, and preserves accepted, deferred, or rejected decisions. Accepting a plan does **not** authorize product implementation.
+
+The default target-project directory is `docs/audit/`: `README.md` provides the handoff and next work, `CONTEXT.md` captures goals and constraints, `audit.json` carries structured state, and `findings/F-001.md`-style records contain evidence, decisions, ordered implementation steps, verification, and recovery. Accepted work must pass a readiness check before a local agent starts; unresolved design choices, changed source assumptions, or missing dependencies stay explicit. Deferred work remains visible without entering the ready queue. Rejected findings retain the user's rationale.
+
+The audit commits documentation through available, authorized GitHub or git mechanisms and verifies the resulting commit. Missing write access or protected-branch restrictions remain explicit publication blockers. Its bundled read-only validator checks artifact structure and consistency; it cannot establish that findings are true, designs are correct, or tests will pass. The skill package contains no target-project audit data.
+
 ## Status and limits
 
-The packages follow the directory-based Agent Skills format. Installation locations are checked against official documentation; see [Compatibility](docs/COMPATIBILITY.md). Local automated checks exercise the installer, metadata ledger, and configuration change bundle without calling models; see [Validation](docs/VALIDATION.md) for results. Cross-platform CI passes on Windows, macOS, and Linux. Live target CLI checks remain pending. Representative instruction scenarios do not certify runtime enforcement or model behavior.
+The packages follow the directory-based Agent Skills format. Installation locations are checked against official documentation; see [Compatibility](docs/COMPATIBILITY.md). Automated checks exercise the installer, metadata ledger, configuration change bundle, and audit artifact validator without calling models; see [Validation](docs/VALIDATION.md) for recorded results and pending checks. Earlier Characterize/Enhance cross-platform CI results do not establish the new Audit Project release's status. Live target CLI checks remain pending. Representative instruction scenarios do not certify runtime enforcement, production readiness of a target project, or model behavior across all domains.
 
 History access, permissions, native capabilities, and telemetry depend on the installed host/version. Missing evidence stays explicit. Measured savings require comparable real usage data; the skill does not guarantee a fixed saving or unlimited autonomous permissions.
 
@@ -64,12 +77,15 @@ History access, permissions, native capabilities, and telemetry depend on the in
 
 Keep session exports, review databases, user profiles, approval records, and configuration backups in private storage **outside this repository and outside shared project instructions**. Enhance's ledger stores supplied metadata. Characterize's optional helper stages and applies reviewed local file changes with drift checks and recovery records. Neither helper redacts secrets or validates native runtime semantics. See [Privacy and safety](docs/PRIVACY.md).
 
+Audit Project deliberately writes reviewed findings and plans to the target repository. Its published artifacts must exclude credentials, private transcripts, exploit details unsuitable for public disclosure, and unrelated personal data. Keep sensitive evidence in an authorized private location and commit only safe references or summaries.
+
 For development and regression checks:
 
 ```sh
 python tools/check_release.py
 python -B -m unittest discover -s skills/characterize/scripts -p 'test_*.py' -v
 python -B -m unittest discover -s skills/enhance/scripts -p 'test_*.py' -v
+python -B -m unittest discover -s skills/audit-project/scripts -p 'test_*.py' -v
 python -B -m unittest discover -s tests -p 'test_*.py' -v
 ```
 

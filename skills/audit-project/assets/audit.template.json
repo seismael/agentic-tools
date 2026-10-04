@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "repository": "https://github.com/REPLACE_ME/REPLACE_ME",
+  "baseline_commit": "REPLACE_ME_WITH_FULL_REVIEWED_COMMIT_SHA",
+  "focus": "REPLACE_ME_WITH_USER_FOCUS_AND_SCOPE",
+  "coverage": [
+    {
+      "id": "C-001",
+      "domain": "REPLACE_ME_WITH_RELEVANT_REVIEW_AREA",
+      "status": "unreviewed",
+      "basis": "The area has not yet been investigated.",
+      "evidence": [],
+      "next_step": "REPLACE_ME_WITH_CONCRETE_INVESTIGATION"
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-001",
+      "title": "REPLACE_ME_WITH_EVIDENCE_BACKED_FINDING",
+      "kind": "question",
+      "severity": "info",
+      "priority": "P3",
+      "confidence": "hypothesis",
+      "status": "undecided",
+      "decision": {"by": "", "summary": "", "reference": ""},
+      "plan_status": "draft",
+      "depends_on": [],
+      "path": "findings/F-001.md",
+      "evidence": []
+    }
+  ]
+}

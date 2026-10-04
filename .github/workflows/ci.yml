@@ -42,5 +42,7 @@ jobs:
         run: python -B -m unittest discover -s skills/characterize/scripts -p "test_*.py" -v
       - name: Test incremental review ledger
         run: python -B -m unittest discover -s skills/enhance/scripts -p "test_*.py" -v
+      - name: Test audit artifact contract
+        run: python -B -m unittest discover -s skills/audit-project/scripts -p "test_*.py" -v
       - name: Test explicit installation
         run: python -B -m unittest discover -s tests -p "test_*.py" -v

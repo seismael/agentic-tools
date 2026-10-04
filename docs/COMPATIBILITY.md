@@ -1,6 +1,6 @@
 # Compatibility and evidence
 
-Documentation checked: **2026-10-04**. This table applies to both Characterize and Enhance. These are documented installation targets, not a claim that every current or future version has passed a live integration test. In invocation examples, replace `<skill>` with `characterize` or `enhance`.
+Documentation checked: **2026-10-04**. This table describes the shared directory format used by Characterize, Enhance, and Audit Project. These are documented installation targets, not a claim that every current or future version has passed a live integration test. In invocation examples, replace `<skill>` with `characterize`, `enhance`, or `audit-project`.
 
 | Surface | Package/discovery evidence | Live runtime verification for this release |
 |---|---|---|
@@ -12,16 +12,17 @@ Documentation checked: **2026-10-04**. This table applies to both Characterize a
 | Antigravity IDE | Same canonical format; different global root from the CLI. | Not run in the IDE. |
 | Other Agent Skills hosts | Common-format candidate; verify host metadata, discovery, tools, and permissions. | Unverified. |
 
-The development environment did not provide these local CLI executables. Automated tests passed locally and in the Windows/macOS/Linux CI matrix, as recorded in [Validation](VALIDATION.md). Helper tests and instruction scenarios do not substitute for testing a host's discovery, effective configuration, permissions, or model behavior.
+The development environment did not provide these local CLI executables. [Validation](VALIDATION.md) records automated results and their release scope; earlier passing results do not certify newly added skills. Helper tests and instruction scenarios do not substitute for testing a host's discovery, effective configuration, permissions, or model behavior.
 
 ## Portable contract
 
 - Each `skills/<skill>/SKILL.md` contains standard `name` and `description` frontmatter matching its directory. Descriptions stay within the common 1,024-character limit.
-- Relative references and Python scripts remain inside the skill directory. There are no fixed developer-machine paths, account-specific settings, API keys, or required external services.
+- Relative references and Python scripts remain inside the skill directory. There are no embedded developer-machine paths, account-specific settings, or API keys. Installation adds no service or subscription; task access requirements still depend on the host and requested work.
 - Optional `agents/openai.yaml` provides OpenAI UI metadata only. Other hosts do not need it; it is not a replacement for their native agent configuration.
 - The instruction workflow uses the host's existing model and tools. Python 3.10+ and its standard library are needed only for the installer and optional helpers.
 - Enhance discovers native histories at execution time. Its ledger consumes normalized metadata supplied by the agent; it is not a universal parser for all proprietary session formats.
 - Characterize discovers target capabilities at execution time. Its file-change helper checks drift and supports recovery; it does not generate or validate a universal configuration schema.
+- Audit Project uses the host's authorized source-reading, research, and GitHub/git capabilities. Its optional read-only helper validates the audit artifact contract, not source-code correctness or implementation quality. Repository writes, branch rules, and remote commit verification depend on the available connection; unavailable operations remain blocked.
 - Instructions can guide behavior but cannot create unsupported runtime capabilities or bypass the host's permissions.
 
 OpenCode V2 relaxes some metadata constraints compared with the unversioned documentation. This package retains the common strict format. Antigravity has older documentation for flat skill files; this release follows its canonical surface-specific directory guide. Check the actual installed version if documentation and discovery differ.
@@ -29,7 +30,7 @@ OpenCode V2 relaxes some metadata constraints compared with the unversioned docu
 ## Verification levels
 
 1. **Format checked:** metadata, directory structure, and bundled references pass the release checker.
-2. **Helper tested:** deterministic tests cover ledger correctness, staged file changes/recovery, and installation behavior.
+2. **Helper tested:** deterministic tests cover ledger correctness, staged file changes/recovery, audit artifact consistency, and installation behavior.
 3. **Scenario reviewed:** selected prompts exercise scope, decisions, cost reasoning, and authorization in a host agent.
 4. **Runtime observed:** the exact target version discovers the skill and completes representative tasks. Record product/version, OS, date, evidence, and limits before marking this level.
 5. **Outcome measured:** comparable real usage establishes cost/performance and quality effects. No savings percentage is asserted by this release.

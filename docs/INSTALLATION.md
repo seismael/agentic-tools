@@ -1,10 +1,10 @@
 # Installation
 
-Install the complete `skills/characterize/` or `skills/enhance/` directory, including its references and optional scripts. Each is independently installable; the repository root is a collection. Use Characterize for setup from goals and current configuration, and Enhance for improvement from actual sessions.
+Install the complete selected directory under `skills/`, including its references and optional scripts. Each is independently installable; the repository root is a collection. Use Characterize for setup from goals and current configuration, Enhance for improvement from actual sessions, and Audit Project for project audits and implementation plans committed to a GitHub repository.
 
 ## Choose a native location
 
-Locations below are documented by the respective vendors as of 2026-10-04. Replace `<skill>` with `characterize` or `enhance`. `~` means the user home directory. Project paths are relative to the relevant workspace/repository. Custom profiles and environment overrides can change locations; verify the installed host's active configuration.
+Locations below are documented by the respective vendors as of 2026-10-04. Replace `<skill>` with `characterize`, `enhance`, or `audit-project`. `~` means the user home directory. Project paths are relative to the relevant workspace/repository. Custom profiles and environment overrides can change locations; verify the installed host's active configuration.
 
 | Host | User/global skill directory | Project skill directory | Explicit use |
 |---|---|---|---|
@@ -23,7 +23,7 @@ Sources: [OpenCode](https://opencode.ai/docs/skills/), [Claude Code](https://cod
 
 ## Optional Python installer
 
-Run from the cloned repository. The same installer works for either skill; substitute its name in both `--skill` and `--to`. Use Python 3.10+ (`python3` on some systems or `py -3` on Windows).
+Run from the cloned repository. The same installer works for every bundled skill; substitute its name in both `--skill` and `--to`. Use Python 3.10+ (`python3` on some systems or `py -3` on Windows).
 
 ```sh
 python tools/install_skill.py --skill characterize --to ~/.claude/skills/characterize --check
@@ -35,6 +35,13 @@ For a project installation, supply an explicit project path:
 ```sh
 python tools/install_skill.py --skill enhance --to /path/to/project/.opencode/skills/enhance --check
 python tools/install_skill.py --skill enhance --to /path/to/project/.opencode/skills/enhance
+```
+
+Audit Project example:
+
+```sh
+python tools/install_skill.py --skill audit-project --to ~/.agents/skills/audit-project --check
+python tools/install_skill.py --skill audit-project --to ~/.agents/skills/audit-project
 ```
 
 PowerShell example for Codex:
@@ -50,9 +57,11 @@ Without Python, copy the folder with your file manager and confirm `<skill>/SKIL
 
 ## Confirm discovery
 
-Use the host's native skill listing/selector when available and ask it to load Characterize or Enhance. Confirm the discovered path and name. If the skill is not listed, check the installed version, active root, folder structure, disabled-skill policy, and host reload guidance. Do not overwrite global `AGENTS.md`, `CLAUDE.md`, or another instruction file with the entire skill.
+Use the host's native skill listing/selector when available and ask it to load the installed skill. Confirm the discovered path and name. If the skill is not listed, check the installed version, active root, folder structure, disabled-skill policy, and host reload guidance. Do not overwrite global `AGENTS.md`, `CLAUDE.md`, or another instruction file with the entire skill.
 
 Discovery is separate from target access. Characterize needs the relevant configuration and task context; Enhance also needs authorized session evidence. Begin with a proposal-only task in a disposable project and confirm scope before approving persistent behavior changes.
+
+Audit Project needs a GitHub repository URL, a focus message, and authorized source access. Committing its artifacts also needs a supported write mechanism; installing the skill creates no GitHub account connection or additional permissions. For a first smoke check, use a disposable repository and ask for an audit of one small subsystem. Confirm that it asks about findings, creates plans rather than product changes, and reports remote publication honestly. See [Validation](VALIDATION.md) for synthetic fixtures and the expected observations.
 
 ## Updates and removal
 
