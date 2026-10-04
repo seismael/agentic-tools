@@ -6,6 +6,8 @@ Use the repository URL already supplied. Resolve owner, repository and actual re
 
 Record source baseline separately from audit destination. Default to an audit branch such as `audit/<focus-slug>`; use direct publication only when requested or already authorized. Respect an existing chosen branch/directory. Do not create a public repository, fork, issue, PR, review comment or notification as a side effect without the relevant authorization. The audit request can authorize audit commits; repository creation and messages are separate actions.
 
+Apply this publication procedure only when remote delivery is part of the request. For explicitly local files or local commits, verify those deliverables and report remote publication as not requested. When GitHub delivery is required but unavailable, record a delivery blocker while preserving completed review and decisions; do not pretend a local commit satisfies remote delivery.
+
 Check visibility before publishing sensitive material. Audit source code without copying private source, credentials, personal data, private session history or raw logs into public artifacts. For a sensitive security finding, commit sanitized metadata and retain restricted details only through an authorized private surface. Do not make audit files a disclosure channel.
 
 ## Consistent commit unit
@@ -35,6 +37,8 @@ If read access is missing, explain the repository/access blocker and request the
 Report commit URL, destination branch and verified changed paths. Store a publication receipt outside the commit being described, or use the tool response in chat; a commit cannot reliably embed its own final SHA. Do not fill a manifest with a fake self-referential commit. On interruption, inspect the remote first to distinguish published work from an orphaned commit or incomplete set before retrying.
 
 Retain the frozen code baseline despite later audit-only commits. If product code changes during the review, compare affected evidence/dependencies and reconcile; do not silently stamp the latest SHA on old findings. A materially new audit can use a separate directory and baseline, linking superseded findings without deleting history.
+
+Read remote source files at the pinned commit rather than a moving branch during a batch. Check pagination/truncation flags in tree/search results; incomplete listings keep coverage partial. A working-tree file with uncommitted edits must not be described as the pinned commit's contents. Source snapshot integrity is independent of whether publication succeeds.
 
 ## Official mechanisms
 

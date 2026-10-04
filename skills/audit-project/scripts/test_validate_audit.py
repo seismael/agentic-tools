@@ -8,7 +8,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from validate_audit import HEADINGS, LIMIT, MAX_ERRORS, Validator, main
+from validate_audit import HEADINGS, LIMIT, MAX_ERRORS, Validator, has_placeholder, main
 
 
 def finding(identity="F-001"):
@@ -24,9 +24,20 @@ def finding(identity="F-001"):
 
 def packet(identity="F-001"):
     return f"# {identity}: Preserve ordered retries\n\n" + "\n\n".join(
-        f"## {heading}\nConcrete {heading.lower()} detail for the local agent."
+        f"## {heading}\n"
+        + (f"### {identity}-T1 — Preserve sequence assignment\n" if heading == "Implementation plan" else "")
+        + f"Concrete {heading.lower()} detail for the local agent."
         for heading in HEADINGS
     ) + "\n"
+
+
+def completion():
+    return {
+        "reference": "commit:" + "b" * 40,
+        "summary": "Preserved the assigned sequence across retries.",
+        "checks": [{"reference": "python -m unittest tests.test_queue", "result": "passed",
+                    "summary": "The retry regression and queue tests passed."}],
+    }
 
 
 class ValidateAuditTests(unittest.TestCase):
@@ -38,7 +49,7 @@ class ValidateAuditTests(unittest.TestCase):
         for name in ("README.md", "CONTEXT.md"):
             (self.root / name).write_text("# Concrete audit context\n", encoding="utf-8")
         self.data = {
-            "version": 1, "repository": "https://github.com/example/project",
+            "version": 2, "repository": "https://github.com/example/project",
             "baseline_commit": "a" * 40, "focus": "Queue correctness and recovery",
             "coverage": [{"id": "C-001", "domain": "Correctness", "status": "reviewed",
                           "basis": "Traced submit/retry behavior and consumers.",
@@ -72,7 +83,8 @@ class ValidateAuditTests(unittest.TestCase):
         self.assertEqual([], self.errors())
 
     def test_pin_and_version(self):
-        for field, value, message in (("version", True, "version"), ("baseline_commit", "main", "baseline_commit"),
+        for field, value, message in (("version", True, "version"), ("version", 1, "explicit revalidation"),
+                                      ("baseline_commit", "main", "baseline_commit"),
                                       ("baseline_commit", "a" * 39, "baseline_commit")):
             with self.subTest(field=field, value=value):
                 old = self.data[field]
@@ -82,12 +94,19 @@ class ValidateAuditTests(unittest.TestCase):
 
     def test_repository_rejects_credentials_and_nonrepository_urls(self):
         for url in ("http://github.com/o/r", "https://user:secret@github.com/o/r", "https://github.com/o/r?token=x",
-                    "https://github.com/o/r/tree/main", "https://github.com/o/..", "https://[broken/o/r"):
+                    "https://github.com/o/r/tree/main", "https://github.com/o/..", "https://[broken/o/r",
+                    "https://@github.com/o/r", "https://bad host/o/r", "https://github.com/o/re\npo",
+                    " https://github.com/o/r", "https://github.com/o/r\x00", "https://bad%host/o/r",
+                    "https://github.com//o/r", "https://github.com/o/r?", "https://github.com/o/r#",
+                    "https://[2001:db8::1]junk/o/r", "https://github.com:/o/r"):
             with self.subTest(url=url):
                 self.data["repository"] = url
                 self.assert_invalid("repository")
-        self.data["repository"] = "https://git.enterprise.example/org/repo"
-        self.assertEqual([], self.errors())
+        for url in ("https://git.enterprise.example/org/repo", "https://git.enterprise.example:8443/org/repo/",
+                    "https://192.0.2.1/org/repo", "https://[2001:db8::1]/org/repo"):
+            with self.subTest(url=url):
+                self.data["repository"] = url
+                self.assertEqual([], self.errors())
 
     def test_required_files(self):
         for name in ("README.md", "CONTEXT.md", "findings/F-001.md", "audit.json"):
@@ -156,15 +175,75 @@ class ValidateAuditTests(unittest.TestCase):
         self.data["findings"].append(second)
         self.data["findings"][0]["depends_on"] = ["F-002"]
         self.assertEqual([], self.errors())
-        second["plan_status"] = "done"
+        second.update(plan_status="done", completion=completion())
         self.assertEqual([], self.errors())
 
     def test_done_requires_completed_dependencies(self):
         self.data["findings"].append(finding("F-002"))
-        self.data["findings"][0].update(plan_status="done", depends_on=["F-002"])
+        self.data["findings"][0].update(plan_status="done", depends_on=["F-002"], completion=completion())
         self.assert_invalid("must be done")
-        self.data["findings"][1]["plan_status"] = "done"
+        self.data["findings"][1].update(plan_status="done", completion=completion())
         self.assertEqual([], self.errors())
+
+    def test_done_requires_structured_completion_and_checks(self):
+        item = self.data["findings"][0]
+        item["plan_status"] = "done"
+        self.assert_invalid("completion object")
+        for value in (None, [], {}, {"reference": "commit:abc", "summary": "Implemented", "checks": []},
+                      {"reference": "commit:abc", "summary": "Implemented", "checks": [None]}):
+            with self.subTest(value=value):
+                item["completion"] = value
+                self.assert_invalid("completion")
+        item["completion"] = completion()
+        self.assertEqual([], self.errors())
+        for field in ("reference", "summary"):
+            with self.subTest(field=field):
+                item["completion"] = completion()
+                item["completion"][field] = ""
+                self.assert_invalid(field)
+        for result in ("failed", "pending", [], None):
+            with self.subTest(result=result):
+                item["completion"] = completion()
+                item["completion"]["checks"][0]["result"] = result
+                self.assert_invalid("check result")
+        item["completion"] = completion()
+        item["completion"]["checks"][0].update(result="not_applicable", summary="")
+        self.assert_invalid("summary")
+        item["completion"]["checks"][0]["summary"] = "No network integration changed, so the integration check does not apply."
+        self.assertEqual([], self.errors())
+
+    def test_blocked_requires_reason_and_next_action(self):
+        item = self.data["findings"][0]
+        item["plan_status"] = "blocked"
+        self.assert_invalid("block_reason")
+        item["block_reason"] = "The retry contract is not yet agreed."
+        self.assert_invalid("next_action")
+        item["next_action"] = "Ask the owner to resolve ordering semantics."
+        self.assertEqual([], self.errors())
+
+    def test_withdrawn_records_keep_attribution_without_requiring_user_provenance(self):
+        item = self.data["findings"][0]
+        item.update(status="withdrawn", plan_status="none",
+                    decision={"by": "auditor", "summary": "The additional caller disproves the initial premise.",
+                              "reference": "src/queue.py:drain"})
+        self.assertEqual([], self.errors())
+        item["plan_status"] = "draft"
+        self.assert_invalid("plan_status=none")
+        item["plan_status"] = "none"
+        item["decision"]["summary"] = ""
+        self.assert_invalid("summary")
+
+    def test_revalidation_is_optional_but_structured_when_present(self):
+        baseline = self.data["baseline_commit"]
+        for value in (None, [], {}, {"commit": "main", "reference": "review:8", "summary": "Checked new callers."}):
+            with self.subTest(value=value):
+                self.data["findings"][0]["revalidation"] = value
+                self.assert_invalid("revalidation")
+        self.data["findings"][0]["revalidation"] = {"commit": "b" * 40, "reference": "review:8", "summary": "Checked compatibility after prerequisite completion."}
+        self.assertEqual([], self.errors())
+        self.assertEqual(baseline, self.data["baseline_commit"])
+        self.data["findings"][0]["revalidation"]["reference"] = ""
+        self.assert_invalid("reference")
 
     def test_unresolved_dependency_blocks_ready(self):
         second = finding("F-002")
@@ -178,7 +257,7 @@ class ValidateAuditTests(unittest.TestCase):
 
     def test_nonaccepted_cannot_be_ready_or_done(self):
         item = self.data["findings"][0]
-        for status in ("undecided", "deferred", "rejected", "superseded"):
+        for status in ("undecided", "deferred", "rejected", "superseded", "withdrawn"):
             for plan in ("ready", "done"):
                 with self.subTest(status=status, plan=plan):
                     item.update(status=status, plan_status=plan)
@@ -224,13 +303,75 @@ class ValidateAuditTests(unittest.TestCase):
                 self.assert_invalid("requires source evidence")
 
     def test_ready_manifest_evidence_cannot_be_template_placeholder(self):
-        self.data["findings"][0]["evidence"][0]["reference"] = "REPLACE_SOURCE_REFERENCE"
+        self.data["findings"][0]["evidence"][0]["reference"] = "AUDIT_TODO_SOURCE_REFERENCE"
         self.assert_invalid("ready manifest entry contains an unresolved placeholder")
 
     def test_headings_inside_code_fence_do_not_count(self):
         path = self.root / "findings" / "F-001.md"
         path.write_text("```markdown\n" + packet() + "```\n", encoding="utf-8")
         self.assertTrue(any("missing heading" in error for error in Validator(self.root).validate()))
+
+    def test_fence_closing_requires_matching_marker_and_no_suffix(self):
+        path = self.root / "findings" / "F-001.md"
+        for false_close in ("```not-a-close", "~~~", "``"):
+            with self.subTest(false_close=false_close):
+                path.write_text("# F-001: Example\n```markdown\n" + false_close + "\n" + packet() + "```\n", encoding="utf-8")
+                self.assertTrue(any("missing heading" in error for error in Validator(self.root).validate()))
+        path.write_text("```markdown\nA fenced example.\n````   \n" + packet(), encoding="utf-8")
+        self.assertEqual([], Validator(self.root).validate())
+        path.write_text("```example <!--\nLiteral code.\n```\n" + packet(), encoding="utf-8")
+        self.assertEqual([], Validator(self.root).validate())
+
+    def test_comment_headings_do_not_count(self):
+        path = self.root / "findings" / "F-001.md"
+        path.write_text("# F-001: Example\n<!--\n" + packet() + "-->\n", encoding="utf-8")
+        self.assertTrue(any("missing heading" in error for error in Validator(self.root).validate()))
+        path.write_text(packet().replace("## Evidence", "<!-- comment -->## Evidence"), encoding="utf-8")
+        self.assertTrue(any("missing heading '## Evidence'" in error for error in Validator(self.root).validate()))
+
+    def test_title_is_first_real_h1(self):
+        path = self.root / "findings" / "F-001.md"
+        body = packet().split("\n", 1)[1]
+        for prefix in ("```markdown\n# F-001: Example\n```\n", "<!-- # F-001: Example -->\n",
+                       "# Unrelated title\n# F-001: Example\n"):
+            with self.subTest(prefix=prefix):
+                path.write_text(prefix + body, encoding="utf-8")
+                self.assertTrue(any("packet title" in error for error in Validator(self.root).validate()))
+
+    def test_markdown_heading_indentation_and_closing_markers_are_valid(self):
+        path = self.root / "findings" / "F-001.md"
+        content = packet()
+        for heading in HEADINGS:
+            content = content.replace("## " + heading + "\n", "  ## " + heading + " ##\n")
+        path.write_text(content, encoding="utf-8")
+        self.assertEqual([], Validator(self.root).validate())
+
+    def test_ready_sections_require_content_beyond_comments_fences_and_headings(self):
+        path = self.root / "findings" / "F-001.md"
+        for empty in ("<!-- content to be written -->", "```\n```", "### Subheading only"):
+            with self.subTest(empty=empty):
+                content = packet()
+                for heading in HEADINGS:
+                    content = content.replace(f"Concrete {heading.lower()} detail for the local agent.", empty)
+                path.write_text(content, encoding="utf-8")
+                self.assertTrue(any("empty" in error for error in Validator(self.root).validate()))
+        path.write_text(packet().replace("Concrete evidence detail for the local agent.", "```python\n# An actual line of source evidence.\n```"), encoding="utf-8")
+        self.assertEqual([], Validator(self.root).validate())
+
+    def test_ready_requires_real_task_heading_in_implementation_section(self):
+        path = self.root / "findings" / "F-001.md"
+        task = "### F-001-T1 — Preserve sequence assignment"
+        for replacement in ("", "```markdown\n" + task + "\n```", "<!-- " + task + " -->", "### F-002-T1 — Wrong finding"):
+            with self.subTest(replacement=replacement):
+                path.write_text(packet().replace(task, replacement), encoding="utf-8")
+                self.assertTrue(any("requires a task heading" in error for error in Validator(self.root).validate()))
+        for delimiter in (":", "-", "–", ""):
+            path.write_text(packet().replace(task, "### F-001-T1 " + delimiter + " Preserve sequence assignment"), encoding="utf-8")
+            self.assertEqual([], Validator(self.root).validate())
+        path.write_text(packet().replace(task, "").replace("## Validation", task + "\n## Validation"), encoding="utf-8")
+        self.assertEqual([], Validator(self.root).validate())
+        path.write_text(packet().replace(task, "").replace("## Evidence", task + "\n## Evidence"), encoding="utf-8")
+        self.assertTrue(any("requires a task heading" in error for error in Validator(self.root).validate()))
 
     def test_packet_title_id_matches_manifest(self):
         (self.root / "findings" / "F-001.md").write_text(packet("F-002"), encoding="utf-8")
@@ -240,8 +381,8 @@ class ValidateAuditTests(unittest.TestCase):
         path = self.root / "findings" / "F-001.md"
         path.write_text("\n".join("## " + heading for heading in HEADINGS), encoding="utf-8")
         self.assertTrue(any("empty" in error for error in Validator(self.root).validate()))
-        for marker in ("TODO", "TBD", "REPLACE_ME", "REPLACE", "REPLACE_TITLE", "REPLACE_FULL_SHA",
-                       "REPLACE_OR_NOT_GRANTED", "{{edit_target}}", "<insert steps>"):
+        for marker in ("TODO", "TBD", "TODO: add acceptance checks", "- TBD", "AUDIT_TODO",
+                       "AUDIT_TODO_TITLE", "AUDIT_TODO_FULL_SHA", "AUDIT_TODO_OR_NOT_GRANTED"):
             with self.subTest(marker=marker):
                 path.write_text(packet() + marker, encoding="utf-8")
                 self.assertTrue(any("placeholder" in error for error in Validator(self.root).validate()))
@@ -251,6 +392,16 @@ class ValidateAuditTests(unittest.TestCase):
         self.write()
         (self.root / "findings" / "F-001.md").write_text(packet() + "TODO", encoding="utf-8")
         self.assertEqual([], Validator(self.root).validate())
+
+    def test_ordinary_source_syntax_and_marker_discussion_are_allowed(self):
+        source = "SQL REPLACE preserves this behavior; render {{ user.name }} in Jinja; discuss TODO comments."
+        self.data["findings"][0]["evidence"][0]["summary"] = source
+        self.write()
+        (self.root / "findings" / "F-001.md").write_text(packet() + source, encoding="utf-8")
+        self.assertEqual([], Validator(self.root).validate())
+        self.assertFalse(has_placeholder("{" * LIMIT))
+        self.data["findings"][0]["evidence"][0]["summary"] = "TODO"
+        self.assert_invalid("ready manifest entry contains an unresolved placeholder")
 
     def test_coverage_states_and_duplicate_ids(self):
         entry = self.data["coverage"][0]

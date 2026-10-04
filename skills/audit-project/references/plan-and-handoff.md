@@ -13,6 +13,8 @@ Link rather than duplicate: the manifest owns structured state; packets own deta
 
 Keep deferred packets concrete about the future objective and likely work, but avoid detailed invented code for an uncertain future architecture. Rejecting a finding needs a short disposition, not six empty pages. The artifact contract defines minimal required sections for all packets and the fuller ready gate.
 
+Use progressive detail. An undecided packet needs the diagnosis and decision card; a deferred packet needs the agreed direction, likely scope, trigger and first revalidation step. Expand task-by-task instructions for accepted work or when the user explicitly requests detailed future planning. Keep common environment, authority, baseline and executor rules in CONTEXT/README; packets link to those and record only finding-specific requirements. Do not repeat a full repro or check script in several sections: define it once and reference the same check ID. Avoid routine delegations for tiny plans when a direct semantic review suffices.
+
 ## Implementation packet requirements
 
 The following questions must have repository-specific answers for a ready packet. State a justified `not applicable` where a concern truly does not apply.
@@ -35,15 +37,17 @@ Read the proposed packet as an implementer with no chat access. Ask whether any 
 
 Check evidence-to-task traceability: every task contributes to an approved outcome, and every accepted outcome has a task and an observable check. Check realistic command syntax and paths against the pinned repository. Validate dependency order, ID/link consistency, status and absence of placeholders. The helper catches structural errors; human/model semantic review remains necessary.
 
+Review the combined plan as well as each packet: competing architecture choices, shared edit targets, removed APIs referenced by another plan, and repeated fixes can make individually plausible packets incompatible. Record integration ownership and expected prerequisite changes. A file overlap is an ordering concern, not automatically a functional dependency. Promote only a coherent set to ready.
+
 “Ready” means ready for authorized implementation at the stated baseline. It does not mean implemented, executed, formally proven, universally optimal, or permission granted. The local agent still performs narrow source checks and verification because code, dependencies and external behavior can change.
 
 ## Executor protocol to include in the index
 
 1. Read `audit.json`, `CONTEXT.md`, and the chosen accepted/ready packet plus direct prerequisites. Confirm current implementation authorization; do not treat `accepted` as blanket permission. Preserve existing authorization without routine reapproval.
-2. Inspect current files/contracts and compare them with the frozen baseline and relevant evidence. Audit-document-only changes do not invalidate code evidence. If unrelated source changed, continue after targeted comparison; if relevant source/assumptions changed, mark the affected packet blocked, record the discrepancy and request/prepare reconciliation. Never blindly execute stale instructions.
-3. Work in dependency order. A ready dependency may be planned first; a dependent task starts only after prerequisite implementation and checks actually complete. `ready` is not equivalent to `done`. Do not execute deferred, rejected, undecided, superseded or blocked packets.
+2. Inspect current files/contracts and compare them with the frozen baseline and relevant evidence, including callers/tests/configuration and prerequisite completion records. Audit-only changes do not invalidate source. Expected prerequisite changes may preserve the design: record `revalidation` with the checked commit and evidence, then continue within existing authority. Block only an unresolved contradiction, assumption or material choice; record `block_reason` and `next_action`. Do not simply overwrite the original evidence's baseline with a newer commit.
+3. Work in dependency order. A ready dependency may be planned first; a dependent task starts only after prerequisite implementation and checks actually complete. `ready` is not equivalent to `done`. Do not execute deferred, rejected, withdrawn, undecided, superseded or blocked packets.
 4. Implement the specified behavior and necessary in-scope repairs, following native project conventions. Reuse approved mechanisms; avoid unrelated redesign. Delegate only independent tasks with disjoint file ownership and explicit integration ownership.
 5. Run the specified checks and necessary project gates; report exact results and environmental limits. If an acceptance criterion fails, repair within scope. Stop for a material contradiction or changed decision rather than inventing a new architecture.
-6. Record task completion, touched files, implementation commit(s), actual checks/outcomes, deviations and remaining limits in the packet; update structured plan state when authorized. Mark `done` only when all required acceptance criteria have supporting evidence. A source-code commit alone does not prove success.
+6. Record task completion, touched files, implementation commit(s), actual checks/outcomes, deviations and remaining limits in the packet; update structured state when authorized. Mark `done` only when all required criteria have evidence and prerequisites are done. Add the manifest `completion` record pointing to that evidence and final acceptance-check results. A missing environment/check is a blocker, not a passing or not-applicable result. A source-code commit alone does not prove success.
 
 No universal executor or orchestration service is required. Any capable authorized local agent can follow the repository files.
