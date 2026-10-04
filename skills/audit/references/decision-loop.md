@@ -6,7 +6,7 @@ Use a compact decision card:
 
 - **F-001 — title**. Severity / priority / confidence, and affected outcome.
 - **Evidence:** one or two precise source references and the causal failure or opportunity; state material uncertainty.
-- **Recommendation:** the concrete approach, expected benefit, important cost/risk, and why it beats the credible alternatives.
+- **Recommendation:** the concrete, professional approach. It must logically and realistically solve the root cause without 'cheating' or removing mandatory constraints. Detail the expected benefit, important cost/risk, and why it beats the credible alternatives.
 - **Alternatives:** normally one or two viable technical choices, each with its tradeoff. Avoid filler choices or obvious straw men.
 - **Decision:** accept recommended or named alternative, defer with reason/trigger, reject with reason, or reply with a question/custom change.
 

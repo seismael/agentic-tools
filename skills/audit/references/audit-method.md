@@ -6,6 +6,8 @@ Build a compact model of the project: whose problem it solves, which outcomes ma
 
 For unfamiliar or high-consequence domains, establish vocabulary, invariants, failure costs, and authoritative sources before recommending changes. Examples: distinguish causal evaluation from future-data leakage in trading/research; retry from exactly-once effects in distributed systems; crash consistency from application consistency in storage. These are examples of reasoning depth, not a fixed list of supported domains. Do not claim expertise based on role-play alone.
 
+**Constraint Realism and Professional Expertise**: Never propose bypassing, canceling, or ignoring fundamental domain constraints (e.g., structural operating costs, network physics, mandatory security boundaries) simply to make a symptom go away. Findings must be deeply thought out and goal-oriented. Solutions must logically resolve the root cause *within* the harsh reality of the production environment. A "solution" that avoids or removes a mandatory constraint is invalid.
+
 Separate product value, architectural fitness, and implementation correctness. A correct implementation can solve the wrong problem; a valuable concept can have unacceptable defects. An established alternative is neither automatic disqualification nor proof that rebuilding it adds value. Compare observable capabilities, integration burden, operational cost, maturity, and unmet user needs. Label adoption and commercial claims as hypotheses without user/customer evidence.
 
 ## Coverage map
