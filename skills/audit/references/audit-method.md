@@ -31,8 +31,8 @@ Add domain-specific areas as needed; do not force irrelevant categories into fin
 
 ## Investigation passes
 
-1. Map repository and end-to-end flows; note unknown boundaries, external systems and generated/vendor code.
-2. Follow high-impact flows across layers. Test plausible failure hypotheses against actual guards/callers.
+1. Map repository and end-to-end flows; comprehensively scan local project environments including `code` directories, `docs`, and `data`/output folders to note unknown boundaries, external systems, and generated evidence.
+2. Cross-reference code logic against generated local data (e.g., logs, matrix cell outputs, telemetry) to mathematically or empirically prove failure hypotheses. A finding is only "significant" if it is consistently verifiable across both the codebase and the actual data outputs.
 3. Inspect component contracts, edge cases and cross-cutting behavior. Look for related occurrences of confirmed root causes.
 4. Check tests, examples, docs, packaging and low-level alignment against actual behavior.
 5. Reconcile alternatives, dependent findings, risk tradeoffs and coverage gaps. Do not re-run broad checks without a concrete remaining question.
@@ -57,6 +57,6 @@ For major redesigns, compare retain/current + targeted fixes, incremental refact
 
 ## Cost controls
 
-Search before reading; retrieve relevant slices plus enough context to avoid false positives. Cache the domain brief, source baseline, coverage, evidence locators, decisions and findings. Load only the next packet and prerequisite evidence on continuation. Avoid redundant assistant-written summaries of existing records. Favor a single coordinator and limited domain delegation over agents each reading the full tree.
+Search before reading; retrieve relevant slices plus enough context to avoid false positives. When inspecting `data` or logs, heavily prioritize `grep`, file previews, or targeted SQL/jq queries over reading entire files. Token efficiency and performance are top priorities; never load unbounded data files into context. Cache the domain brief, source baseline, coverage, evidence locators, decisions and findings. Load only the next packet and prerequisite evidence on continuation. Avoid redundant assistant-written summaries of existing records. Favor a single coordinator and limited domain delegation over agents each reading the full tree.
 
 Give an early concrete finding or coverage result; do not consume the entire budget before producing value. Checkpoint pending work honestly. Respect a user's requested full depth: bounded batches accumulate coverage and must never be described as a complete audit until the recorded scope is complete.
