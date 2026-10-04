@@ -69,7 +69,7 @@ The audit commits documentation through available, authorized GitHub or git mech
 
 ## Status and limits
 
-The packages follow the directory-based Agent Skills format. Installation locations are checked against official documentation; see [Compatibility](docs/COMPATIBILITY.md). Automated checks exercise the installer, metadata ledger, configuration change bundle, and audit artifact validator without calling models; see [Validation](docs/VALIDATION.md) for recorded results and pending checks. Earlier Characterize/Enhance cross-platform CI results do not establish the new Audit Project release's status. Live target CLI checks remain pending. Representative instruction scenarios do not certify runtime enforcement, production readiness of a target project, or model behavior across all domains.
+The packages follow the directory-based Agent Skills format. Installation locations are checked against official documentation; see [Compatibility](docs/COMPATIBILITY.md). Automated checks exercise the installer, metadata ledger, configuration change bundle, and audit artifact validator without calling models; see [Validation](docs/VALIDATION.md) for recorded results and pending checks. The Audit Project release also passed the four-job Windows/macOS/Linux CI matrix; see the linked validation evidence. Live target CLI checks remain pending. Representative instruction scenarios do not certify runtime enforcement, production readiness of a target project, or model behavior across all domains.
 
 History access, permissions, native capabilities, and telemetry depend on the installed host/version. Missing evidence stays explicit. Measured savings require comparable real usage data; the skill does not guarantee a fixed saving or unlimited autonomous permissions.
 
