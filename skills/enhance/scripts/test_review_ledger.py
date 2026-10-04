@@ -1,5 +1,6 @@
 """Run with python3 -B -m unittest discover -s <skill>/scripts -p test_review_ledger.py."""
 import json
+from contextlib import closing
 import os
 from pathlib import Path
 import sqlite3
@@ -128,12 +129,12 @@ class LedgerTest(unittest.TestCase):
             with self.subTest(version=version):
                 if self.db.exists():
                     self.db.unlink()
-                with sqlite3.connect(self.db) as db:
+                with closing(sqlite3.connect(self.db)) as db, db:
                     db.execute("CREATE TABLE sentinel (value TEXT)")
                     db.execute("INSERT INTO sentinel VALUES ('keep')")
                     db.execute(f"PRAGMA user_version={version}")
                 self.assertIn("database", self.run_cli("show", ok=False)["error"])
-                with sqlite3.connect(self.db) as db:
+                with closing(sqlite3.connect(self.db)) as db, db:
                     self.assertEqual(db.execute("PRAGMA user_version").fetchone()[0], version)
                     self.assertEqual(db.execute("SELECT value FROM sentinel").fetchone()[0], "keep")
                     self.assertEqual(db.execute("SELECT count(*) FROM sqlite_master WHERE type='table'")
