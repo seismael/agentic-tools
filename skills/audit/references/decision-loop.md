@@ -10,9 +10,9 @@ Use a compact decision card:
 - **Alternatives:** normally one or two viable technical choices, each with its tradeoff. Avoid filler choices or obvious straw men.
 - **Decision:** accept recommended or named alternative, defer with reason/trigger, reject with reason, or reply with a question/custom change.
 
-When presenting a finding, DO NOT just ask for a generic "Approve, Reject, or Defer" response in plain text. Instead, use native interactive UI tools (such as the `ask_question` tool) to present concrete, deeply investigated remediation options as selectable checkboxes (e.g., "Option A: Migrate to zero-fee tier", "Option B: Widen RSI entry threshold"). 
+When presenting a finding, DO NOT just ask for a generic "Approve, Reject, or Defer" response in plain text. Instead, use native interactive UI tools (such as the `ask_question` tool) to present concrete, deeply investigated remediation options as selectable choices (e.g., "Option A: Sharded ringbuffer with zero-copy queuing", "Option B: Asynchronous worker pool with backpressure throttling"). 
 
-Always ensure a write-in option is available (or rely on the tool's default 'other' text box) so the user can submit a custom reply or tailored message instead of just clicking an option. Presenting distinct, well-researched architectural choices is mandatory. Ask one finding at a time. A further explanation or request to compare options leaves the disposition undecided.
+Always ensure a write-in option is available (or rely on the tool's default 'other' text box) so the user can submit a custom reply or tailored message instead of just clicking an option. Presenting distinct, well-researched architectural choices is mandatory. Ask one finding at a time. Keep the question text dense, direct, and free of conversational fluff to minimize token consumption. A further explanation or request to compare options leaves the disposition undecided.
 
 Persist provenance as the user's statement/message locator, chosen option, scope, rationale and relevant conditions. Do not fabricate a message ID; a concise attributable quotation/description is sufficient when stable IDs are unavailable. Do not paste the whole conversation. A previous clear decision satisfies this loop; do not force a redundant interview.
 
