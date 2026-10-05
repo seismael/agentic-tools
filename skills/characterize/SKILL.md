@@ -17,7 +17,7 @@ Translate user needs into the smallest effective native setup. Optimize total in
 
 ## 1. Establish the brief and current state
 
-Extract outcomes, representative tasks, constraints, quality floor, target/interface, intended scope, and existing authorization. Start with bounded read-only discovery where accessible; if the target is ambiguous, ask that first. Clarify product versus CLI/editor/web interface only when it changes implementation.
+Extract outcomes, representative tasks, constraints, quality floor, target/interface, intended scope, and existing authorization. Check for an existing shared knowledge base (`docs/knowledge/index.md` or `.<project>/knowledge/index.md`) to discover existing project topology, invariants, and constraints with minimal token burn. Start with bounded read-only discovery where accessible; if the target is ambiguous, ask that first. Clarify product versus CLI/editor/web interface only when it changes implementation.
 
 Reuse an existing [blueprint](references/blueprint.md); otherwise create a compact private record. Scale it to the change: a few instruction edits need a brief decision/change/check/recovery record, not every table or a full setup report. Reference diffs, hashes, and evidence once instead of restating them. Distinguish user statements, observations, recommendations, unknowns, and rejected options. Review the [interview coverage](references/interview.md) once; ask only unresolved consequential questions. For mixed work, use conditional task/project rules or separate selectable profiles when a real conflict requires them.
 
