@@ -5,7 +5,7 @@ Must contain:
 - `# Project Knowledge Base`
 - A 2-line high-level project summary (problem domain, primary language/runtime).
 - A markdown table listing each leaf:
-  - `Topic`: Link to file (dual-syntax `[Title](leaf.md)` / `[[leaf]]`).
+  - `Topic`: Relative link to target markdown leaf alongside Obsidian wikilink (e.g. `[[topic_leaf]]`).
   - `Focus`: 1-line description of what facts live here.
   - `Last Updated`: ISO date (`YYYY-MM-DD`).
 

@@ -1,8 +1,11 @@
 """Unit tests for validate_knowledge.py."""
 
 from pathlib import Path
+import sys
 import tempfile
 import unittest
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from validate_knowledge import (
     MAX_INDEX_BYTES,

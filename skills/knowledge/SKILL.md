@@ -10,13 +10,15 @@ Maintain a living, token-efficient, Obsidian-compatible Map of Content (MOC) wik
 ## Operating Contract
 
 - **Zero-Daemon, Plaintext Markdown**: All knowledge is stored as human-readable, Git-versioned GitHub Flavored Markdown (GFM). No external databases, vector services, background daemons, or proprietary formats.
-- **Obsidian & Dual-Syntax Compatibility**: Every internal reference uses dual-syntax links (`[Topic](topic.md)` alongside `[[topic]]`) for seamless visual navigation in Obsidian and standard markdown viewers.
+- **Obsidian & Dual-Syntax Compatibility**: Every internal reference uses dual-syntax links (standard markdown link alongside Obsidian `[[topic]]` wikilink) for seamless visual navigation in Obsidian and standard markdown viewers.
 - **Strict Token-Economy & Leaf Bounds**:
   - The root Map of Content (`index.md`) is hard-capped at $\le 2\text{ KB}$ (~400 tokens).
   - Every individual topic leaf is hard-capped at $\le 3\text{ KB}$ (~600 tokens).
   - **Leaf-Only Traversal**: Agents MUST NEVER stream the full wiki into context. An agent loads `index.md` first, identifies the single relevant leaf, and fetches only that file.
 - **Zero Conversational Chatter**: Wiki updates are strictly factual, dense, and structured (tables, bullet points, exact file paths). Never append conversational filler or narrative essays.
 - **Path Isolation & Discovery**: Defaults to `<project_root>/docs/knowledge/` (version-controlled) or `.<project>/knowledge/` (runtime local). Respects project repository root immutability rules.
+
+See [wiki protocol](references/wiki-protocol.md) and [schema and structure](references/schema-and-structure.md) for detailed contracts.
 
 ---
 

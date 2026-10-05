@@ -12,8 +12,7 @@
 ## 2. File Naming and Linking Conventions
 
 - **Filenames**: Lowercase with underscores (e.g., `data_topology.md`, `architecture.md`).
-- **Dual-Syntax Links**: Every cross-reference should provide standard relative markdown syntax alongside Obsidian wikilinks:
-  `[Architecture](architecture.md) / [[architecture]]`
+- **Dual-Syntax Links**: Every cross-reference should provide standard relative markdown link syntax (linking to the relative markdown file) alongside Obsidian wikilinks (e.g. `[[target_leaf]]`).
 - **Section Headers**: Standard markdown `#`, `##`, `###` headings to allow precise sub-section referencing.
 
 ---
