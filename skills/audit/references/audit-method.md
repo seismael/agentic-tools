@@ -8,6 +8,8 @@ For unfamiliar or high-consequence domains, establish vocabulary, invariants, fa
 
 **Constraint Realism and Professional Expertise**: Never propose bypassing, canceling, or ignoring fundamental domain constraints (e.g., structural operating costs, network physics, mandatory security boundaries) simply to make a symptom go away. Findings must be deeply thought out and goal-oriented. Solutions must logically resolve the root cause *within* the harsh reality of the production environment. A "solution" that avoids or removes a mandatory constraint is invalid.
 
+**Cross-Boundary Causality**: Never isolate a failure to a single component without verifying its downstream contracts. If a component (e.g., a signal generator) fails to achieve its outcome, mathematically trace its output through downstream boundaries (e.g., allocators, risk gates, friction models) to find the exact point of constraint mismatch. Expert auditors resolve systemic contradictions, not just local symptoms.
+
 Separate product value, architectural fitness, and implementation correctness. A correct implementation can solve the wrong problem; a valuable concept can have unacceptable defects. An established alternative is neither automatic disqualification nor proof that rebuilding it adds value. Compare observable capabilities, integration burden, operational cost, maturity, and unmet user needs. Label adoption and commercial claims as hypotheses without user/customer evidence.
 
 ## Coverage map
