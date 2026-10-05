@@ -19,7 +19,8 @@ Improve the user's experience by learning from actual interactions and making sm
 
 ## 1. Discover access, native surfaces, and previous progress
 
-Use relevant sections of [native-adapters.md](references/native-adapters.md) for first-time discovery or changed native capabilities; reuse verified adapter records otherwise. Consult the project's shared knowledge base (`docs/knowledge/index.md` or `.<project>/knowledge/index.md`) if present to verify known defects, past user decisions, and invariants before proposing instruction adjustments. Establish target product/version, source/profile identity, project identities, accessible history sources, native configuration precedence, and actual effective settings. Inspect metadata first and redact credentials. Configuration can live in files, native APIs, databases, or product UI; use the supported interface. Inventory relevant families of settings, instructions, skills, modes, agents, tools, and hooks, then read only surfaces implicated by evidence. For each candidate, establish purpose, owner, scope/selector, active value, source/provenance, inheritance or merge behavior, constraints, and expected affected work. File names and physical locations alone do not establish semantic scope.
+Use relevant sections of [native-adapters.md](references/native-adapters.md) for first-time discovery or changed native capabilities; reuse verified adapter records otherwise. Consult the project's shared knowledge base (`docs/knowledge/index.md` or `.<project>/knowledge/index.md`) if present to verify known defects, past user decisions, and invariants before proposing instruction adjustments; if absent, dynamically bootstrap it from standard templates upon completing the enhancement pass. Establish target product/version, source/profile identity, project identities, accessible history sources, native configuration precedence, and actual effective settings. Inspect metadata first and redact credentials. Configuration can live in files, native APIs, databases, or product UI; use the supported interface. Inventory relevant families of settings, instructions, skills, modes, agents, tools, and hooks, then read only surfaces implicated by evidence. For each candidate, establish purpose, owner, scope/selector, active value, source/provenance, inheritance or merge behavior, constraints, and expected affected work. File names and physical locations alone do not establish semantic scope.
+
 
 Label capabilities `native`, `instruction-only`, `extension-required`, `unsupported`, or `unverified`. Verify exact setting names and precedence using installed help/schema and, when necessary, current official documentation. Never transfer configuration keys or permission semantics between tools.
 
@@ -88,6 +89,7 @@ Use concise, informative, actionable messages. Lead with the result or decision 
 - Changes: scope, behavior improved, and the evidence that justified each meaningful edit.
 - Verification: acceptance criteria met, what remains unobserved, and measured efficiency changes only if available.
 - User decisions: approved/applied, deferred, or awaiting feedback; ask one focused outcome question only when it would materially help.
-- Continuity: durable state/recovery location and how to resume.
+- Continuity: durable state/recovery location and how to resume. Dynamically synchronize verified interaction lessons into the knowledge base: append resolved interaction defects to `known_defects.md` and approved workflow decisions to `decisions.md`.
+
 
 Keep the ordinary report short; expand only for a requested audit or material complexity. Never paste the full evidence ledger into chat. End when supported changes are verified as far as access permits and progress is safely saved.

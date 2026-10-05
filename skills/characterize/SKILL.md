@@ -17,7 +17,8 @@ Translate user needs into the smallest effective native setup. Optimize total in
 
 ## 1. Establish the brief and current state
 
-Extract outcomes, representative tasks, constraints, quality floor, target/interface, intended scope, and existing authorization. Check for an existing shared knowledge base (`docs/knowledge/index.md` or `.<project>/knowledge/index.md`) to discover existing project topology, invariants, and constraints with minimal token burn. Start with bounded read-only discovery where accessible; if the target is ambiguous, ask that first. Clarify product versus CLI/editor/web interface only when it changes implementation.
+Extract outcomes, representative tasks, constraints, quality floor, target/interface, intended scope, and existing authorization. Check for an existing shared knowledge base (`docs/knowledge/index.md` or `.<project>/knowledge/index.md`) to discover existing project topology, invariants, and constraints with minimal token burn. If absent, dynamically bootstrap the knowledge base from standard templates upon completing characterization. Start with bounded read-only discovery where accessible; if the target is ambiguous, ask that first. Clarify product versus CLI/editor/web interface only when it changes implementation.
+
 
 Reuse an existing [blueprint](references/blueprint.md); otherwise create a compact private record. Scale it to the change: a few instruction edits need a brief decision/change/check/recovery record, not every table or a full setup report. Reference diffs, hashes, and evidence once instead of restating them. Distinguish user statements, observations, recommendations, unknowns, and rejected options. Review the [interview coverage](references/interview.md) once; ask only unresolved consequential questions. For mixed work, use conditional task/project rules or separate selectable profiles when a real conflict requires them.
 
@@ -66,6 +67,7 @@ Keep implementations and verification separate for each target even when they sh
 
 Report `static-validated`, `loaded`, `behavior-validated`, and `efficiency-measured` separately, with evidence or pending reason. Use a bounded typical task and a meaningful difficult case where feasible. Validate real effective settings; simulations do not prove enforcement. Expand tests only for a concrete remaining risk or required gate. Stop when acceptance is met.
 
-Deliver the outcome, relevant changes, how to use the setup, validation/limits, and private recovery location concisely. Put long diffs and records in artifacts, not repeated chat narration. Preserve the profile, decisions, approval scope, hashes, and next action in the private record.
+Deliver the outcome, relevant changes, how to use the setup, validation/limits, and private recovery location concisely. Put long diffs and records in artifacts, not repeated chat narration. Preserve the profile, decisions, approval scope, hashes, and next action in the private record. Dynamically synchronize verified facts with the project knowledge base: record discovered runtime topology in `data_topology.md`, confirmed invariants in `invariants.md`, and agreed configuration decisions in `decisions.md`.
+
 
 On resume, inspect current hashes and changed needs; reuse valid evidence, refresh affected capabilities, and propose a minimal diff. An unchanged successful setup should require no new rules. If evidence is missing, say what remains unverified and give precise continuation steps. Do not add background optimization, new subscriptions, watchers, or recurring reviews unless requested.
