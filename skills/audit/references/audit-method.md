@@ -14,6 +14,8 @@ For unfamiliar or high-consequence domains, establish vocabulary, invariants, fa
 
 **Cross-Boundary Causality**: Never isolate a failure to a single component without verifying its downstream contracts. If a component (e.g., a signal generator) fails to achieve its outcome, mathematically trace its output through downstream boundaries (e.g., allocators, risk gates, friction models) to find the exact point of constraint mismatch. Expert auditors resolve systemic contradictions, not just local symptoms.
 
+**Empirical vs Nominal Payoff Fidelity**: Compare nominal system design (e.g., target risk/reward, intended pricing, algorithmic bounds) against empirical realization data in telemetry and performance reports. When empirical payoff or throughput drastically diverges from theoretical design (e.g., a 3:1 theoretical edge realizing as a 1:1 net return), rigorously audit the lifecycle execution mechanics (order typing, fill models, intrabar retracement handling, fee and slippage attribution). Identify and eliminate structural execution biases and asymmetries that silently destroy the system's economic edge.
+
 Separate product value, architectural fitness, and implementation correctness. A correct implementation can solve the wrong problem; a valuable concept can have unacceptable defects. An established alternative is neither automatic disqualification nor proof that rebuilding it adds value. Compare observable capabilities, integration burden, operational cost, maturity, and unmet user needs. Label adoption and commercial claims as hypotheses without user/customer evidence.
 
 ## Coverage map
