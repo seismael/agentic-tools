@@ -8,11 +8,12 @@ Portable skills for making AI agents more effective, reliable, and economical th
 |---|---|
 | [Characterize](skills/characterize/SKILL.md) | Translate goals, domains, workflows, and constraints into a minimal native setup; interview only where evidence leaves consequential choices unresolved. |
 | [Enhance](skills/enhance/SKILL.md) | Learn from actual sessions, diagnose wasted effort, and improve native settings and workflows at the correct global, project, agent, or task scope. |
-| [Audit Project](skills/audit-project/SKILL.md) | Audit a GitHub project against its goals and domain, resolve findings with the user one at a time, and commit evidence-backed implementation plans for local agents. |
+| [Audit](skills/audit/SKILL.md) | Audit local or remote repositories against user goals and domain risks, resolve findings with the user, and execute the 5-stage autonomous optimization loop. |
+| [Knowledge](skills/knowledge/SKILL.md) | Maintain an indexed, token-efficient, Obsidian-compatible local Markdown wiki to prevent context drift and eliminate redundant exploration scans. |
 
-Use Characterize to establish or revise a setup from current needs. Use Enhance to improve it from actual session evidence. Each works independently; when useful, carry forward a compact private profile and approved scope.
+Use Characterize to establish or revise a setup from current needs. Use Enhance to improve it from actual session evidence. Use Audit and Knowledge to execute continuous, autonomous, and token-frugal optimization loops. See [Autonomous Optimization Guide](docs/guides/autonomous-loop.md) for cross-platform agent execution patterns.
 
-All prioritize performance and cost effectiveness: useful completed work per input/output consumption, total cost, and elapsed time, while preserving required correctness and reliability. They support research, writing, analysis, design, operations, and engineering. Audit Project evaluates the project itself; Characterize and Enhance improve the agent setup and its usage.
+All prioritize performance and cost effectiveness: useful completed work per input/output consumption, total cost, and elapsed time, while preserving required correctness and reliability. They support research, writing, analysis, design, operations, and engineering. Audit evaluates and optimizes the project itself; Characterize and Enhance improve the agent setup and its usage; Knowledge compounds verified project facts.
 
 ## Install a skill
 
@@ -27,11 +28,11 @@ python tools/install_skill.py --skill characterize --to ~/.agents/skills/charact
 python tools/install_skill.py --skill characterize --to ~/.agents/skills/characterize
 ```
 
-The shared installer accepts any bundled skill: replace `characterize` with `enhance` or `audit-project` in both arguments. The example uses Codex's documented user skill directory. See [Installation](docs/INSTALLATION.md) for OpenCode, Claude Code, Gemini CLI, Antigravity CLI (`agy`), and Antigravity IDE. Python is optional for the instruction workflow; the installer and bundled helpers require it.
+The shared installer accepts any bundled skill: replace `characterize` with `enhance`, `audit`, or `knowledge` in both arguments. The example uses Codex's documented user skill directory. See [Installation](docs/INSTALLATION.md) for OpenCode, Claude Code, Gemini CLI, Antigravity CLI (`agy`), and Antigravity IDE. Python is optional for the instruction workflow; the installer and bundled helpers require it.
 
 ## Use it
 
-Select the skill using your host's native control. In Codex CLI, use `$characterize`, `$enhance`, or `$audit-project`; in Claude Code and Antigravity CLI, use `/characterize`, `/enhance`, or `/audit-project`. In OpenCode or Gemini CLI, explicitly request the named skill in your prompt and verify discovery through the native skill interface.
+Select the skill using your host's native control. In Codex CLI, use `$characterize`, `$enhance`, `$audit`, or `$knowledge`; in Claude Code and Antigravity CLI, use `/characterize`, `/enhance`, `/audit`, or `/knowledge`. In OpenCode or Gemini CLI, explicitly request the named skill in your prompt and verify discovery through the native skill interface.
 
 Example requests:
 
