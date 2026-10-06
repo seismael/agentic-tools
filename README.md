@@ -6,14 +6,15 @@ Portable skills for making AI agents more effective, reliable, and economical th
 
 | Skill | Purpose |
 |---|---|
+| [Loop](skills/loop/SKILL.md) | Execute single-goal autonomous continuous optimization loops endlessly across diagnosis, candidate testing, and git compounding. |
+| [Audit](skills/audit/SKILL.md) | Audit local or remote repositories against user goals and domain risks, resolve findings, and produce verified implementation plans. |
+| [Knowledge](skills/knowledge/SKILL.md) | Maintain an indexed, token-efficient, Obsidian-compatible local Markdown wiki to prevent context drift and eliminate redundant exploration scans. |
 | [Characterize](skills/characterize/SKILL.md) | Translate goals, domains, workflows, and constraints into a minimal native setup; interview only where evidence leaves consequential choices unresolved. |
 | [Enhance](skills/enhance/SKILL.md) | Learn from actual sessions, diagnose wasted effort, and improve native settings and workflows at the correct global, project, agent, or task scope. |
-| [Audit](skills/audit/SKILL.md) | Audit local or remote repositories against user goals and domain risks, resolve findings with the user, and execute the 5-stage autonomous optimization loop. |
-| [Knowledge](skills/knowledge/SKILL.md) | Maintain an indexed, token-efficient, Obsidian-compatible local Markdown wiki to prevent context drift and eliminate redundant exploration scans. |
 
-Use Characterize to establish or revise a setup from current needs. Use Enhance to improve it from actual session evidence. Use Audit and Knowledge to execute continuous, autonomous, and token-frugal optimization loops. See [Autonomous Optimization Guide](docs/guides/autonomous-loop.md) for cross-platform agent execution patterns.
+Use Loop to run autonomous, endless, goal-directed optimization cycles on any codebase. Use Audit to analyze domain risks and produce structured plans. Use Knowledge to preserve repository facts and decisions across sessions. See [Autonomous Optimization Guide](docs/guides/autonomous-loop.md) for cross-platform agent execution patterns.
 
-All prioritize performance and cost effectiveness: useful completed work per input/output consumption, total cost, and elapsed time, while preserving required correctness and reliability. They support research, writing, analysis, design, operations, and engineering. Audit evaluates and optimizes the project itself; Characterize and Enhance improve the agent setup and its usage; Knowledge compounds verified project facts.
+All prioritize performance and cost effectiveness: useful completed work per input/output consumption, total cost, and elapsed time, while preserving required correctness and reliability. They support research, writing, analysis, design, operations, and engineering. Loop and Audit optimize the project itself; Characterize and Enhance improve the agent setup and its usage; Knowledge compounds verified project facts.
 
 ## Install a skill
 
