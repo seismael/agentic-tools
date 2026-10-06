@@ -55,8 +55,8 @@ All agent skills (`audit`, `characterize`, `enhance`, `code`, `test`) interact w
 ### Step 2: Write-on-Completion (Knowledge Compounding)
 When a skill finishes an investigation, execution, or decision cycle, it persists new verified facts:
 - **Discovered Data/Log Path**: Append an exact row to `data_topology.md`.
-- **Accepted Architectural Decision**: Append a dated record to `decisions.md`.
-- **Confirmed Root-Cause Defect**: Append a structured bug card to `known_defects.md`.
+- **Accepted Architectural Decision**: Append a dated record to `decisions.md` (including empirical metric delta and any realigned test fixtures).
+- **Confirmed Root-Cause Defect**: Append a structured bug card to `known_defects.md` (detailing failure mechanics and anti-patterns to avoid).
 - **New System Invariant**: Append the rule to `invariants.md`.
 
 ---

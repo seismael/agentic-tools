@@ -26,6 +26,16 @@ For unfamiliar or high-consequence domains, establish vocabulary, invariants, fa
 3. *High Signal-to-Noise Ratio*: Use concise markdown tables, bullet points, and surgical code diffs. Avoid explanatory prose where structured facts suffice.
 4. *Targeted Input Slices*: Use precise search tools (`grep`, bounded line inspection) rather than loading entire source or data files into context. Never stream multi-megabyte logs or raw datasets.
 
+**Pre-Evaluation Snapshot Protocol**: Before launching any long-running test execution, simulation, historical backtest, or benchmark process, the agent MUST guarantee that the repository working tree is in an immutable, committed, or cleanly stashed state. Modifying source files or configuration while an asynchronous evaluation is running in the background causes runtime source identity drift and publication failures. Always commit or stash candidate modifications before kicking off background evaluators.
+
+**Synthetic Fixture Realignment vs. Runtime Defects**: When a verified architectural or domain improvement is applied, legacy synthetic unit tests that hardcode obsolete or pre-improvement behavior may fail. The auditor must explicitly distinguish between:
+1. *Stale Synthetic Fixtures*: Tests asserting superseded nominal values or outdated mock states. These fixtures MUST be cleanly realigned to the improved canonical behavior in the same atomic commit.
+2. *True Runtime Regressions*: Unintended breaks in downstream system invariants or interface contracts.
+
+**Dual-Gate Verification (Objective Metric + Invariant Soundness)**: Every proposed optimization or remediation must pass two orthogonal gates before adoption:
+1. *Objective Metric Gate*: Demonstrable empirical improvement on primary target metrics (e.g., higher throughput, reduced latency, improved payoff ratio, or positive net gain).
+2. *Invariant Soundness Gate*: Zero violation of fundamental system invariants (e.g., conservation laws, double-entry balance, clock monotonicity, absence of race conditions, and zero unhandled errors). Never promote an apparent metric gain achieved by corrupting system invariants.
+
 Separate product value, architectural fitness, and implementation correctness. A correct implementation can solve the wrong problem; a valuable concept can have unacceptable defects. An established alternative is neither automatic disqualification nor proof that rebuilding it adds value. Compare observable capabilities, integration burden, operational cost, maturity, and unmet user needs. Label adoption and commercial claims as hypotheses without user/customer evidence.
 
 ## Coverage map
