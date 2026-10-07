@@ -97,6 +97,22 @@ class TestValidateKnowledge(unittest.TestCase):
         errors = validate_knowledge_base(self.kb_dir)
         self.assertEqual(errors, [])
 
+    def test_sub_leaf_split_is_allowed(self) -> None:
+        (self.kb_dir / "index.md").write_text(
+            "# MOC\n- [Decisions](decisions.md)", encoding="utf-8"
+        )
+        (self.kb_dir / "decisions.md").write_text(
+            "# Decisions\n[[index]]\n[Full log](decisions/log.md)", encoding="utf-8"
+        )
+        sub = self.kb_dir / "decisions"
+        sub.mkdir()
+        (sub / "log.md").write_text(
+            "# Log\n[[decisions]]\n" + ("row\n" * (MAX_LEAF_BYTES // 2)),
+            encoding="utf-8",
+        )
+        errors = validate_knowledge_base(self.kb_dir)
+        self.assertEqual(errors, [])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -36,6 +36,10 @@ When any leaf exceeds its byte ceiling:
 3. Retain a condensed summary table in the parent leaf linking to the sub-leaves.
 4. Update `index.md` to reflect the expanded topology.
 
+Sub-leaves are exempt from the hard byte ceiling (only top-level leaves are bounded)
+and are referenced by relative path or wikilink; `validate_knowledge.py` resolves
+either form against the whole knowledge base.
+
 ---
 
 ## 4. Interaction Rules for External Skills

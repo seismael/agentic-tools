@@ -6,9 +6,11 @@ Usage:
 
 Checks:
     - index.md exists and acts as Map of Content (MOC).
-    - File size limits: index.md <= 2,048 bytes; other leaves <= 3,072 bytes.
-    - Link integrity: all [target](path.md) and [[wikilinks]] resolve to existing files.
-    - Orphan check: all markdown files in the directory must be linked from index.md.
+    - File size limits: index.md <= 2,048 bytes; top-level leaves <= 3,072 bytes.
+      Sub-leaves (markdown in sub-folders) hold granular detail and are exempt.
+    - Link integrity: all [target](path.md) and [[wikilinks]] resolve to a file
+      anywhere in the knowledge base (Obsidian-style, so sub-leaf links work).
+    - Orphan check: every top-level leaf must be linked from index.md.
 """
 
 from __future__ import annotations
@@ -60,7 +62,7 @@ def validate_knowledge_base(directory: Path | str) -> list[str]:
         return [f"Missing index.md (Map of Content) in {kb_dir}"]
 
     all_md_files = {p.name: p for p in kb_dir.glob("*.md")}
-    
+
     # Check size limits
     index_size = index_path.stat().st_size
     if index_size > MAX_INDEX_BYTES:
@@ -85,7 +87,8 @@ def validate_knowledge_base(directory: Path | str) -> list[str]:
         if name != "index.md" and name not in index_targets:
             errors.append(f"Orphan leaf: '{name}' is not indexed in index.md")
 
-    # Check bidirectional link integrity across all leaves
+    # Check link integrity across all leaves, including sub-leaf splits
+    known_targets = {p.name for p in kb_dir.rglob("*.md")}
     for name, path in all_md_files.items():
         try:
             content = path.read_text(encoding="utf-8")
@@ -95,8 +98,10 @@ def validate_knowledge_base(directory: Path | str) -> list[str]:
 
         targets = extract_links(content)
         for target in targets:
-            if target not in all_md_files:
-                errors.append(f"Broken link in {name}: target '{target}' does not exist")
+            if target not in known_targets:
+                errors.append(
+                    f"Broken link in {name}: target '{target}' does not exist"
+                )
 
     return errors
 
@@ -113,7 +118,9 @@ def main() -> int:
             print(f"  - ERROR: {err}", file=sys.stderr)
         return 1
 
-    print("VALID: Knowledge base adheres to token-efficient MOC structure and link integrity.")
+    print(
+        "VALID: Knowledge base adheres to token-efficient MOC structure and link integrity."
+    )
     return 0
 
 
