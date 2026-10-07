@@ -1,41 +1,43 @@
 ---
 name: loop
-description: Autonomous continuous optimization engine for software, quantitative trading, and systems engineering. Takes a single high-level goal and runs endless autonomous iterative cycles of diagnosis, candidate formulation, pre-evaluation snapshot, dual-gate verification, and knowledge compounding without stopping or asking intermediate questions.
+description: Autonomous continuous optimization engine for software, quantitative trading, and systems engineering. Takes a single high-level goal and runs endless autonomous iterative cycles of diagnosis, candidate formulation, pre-evaluation snapshot, dual-gate verification, and knowledge compounding without stopping or asking intermediate questions. Runs entirely in-session, sequentially and self-managed, with no external process or plugin.
 ---
 
 # Loop (Autonomous Continuous Optimization Engine)
 
-Execute endless, autonomous, goal-directed optimization cycles on any repository. The user
-supplies only a single high-level objective (e.g. `/loop improve net profit across all
-symbols` or `/loop reduce p99 latency under 5ms for the next 2 hours`). The agent derives
-all operational details, discovers the data topology and execution commands, and iterates
-continuously until the goal or time budget is satisfied.
+Run an endless, autonomous, goal-directed optimization loop **inside this session**. The user
+supplies a single high-level objective (e.g. `/loop improve net profit across all symbols`
+or `/loop reduce p99 latency under 5ms`). The agent derives every operational detail, reads
+the project's durable state, takes **one atomic step at a time**, records it, and continues
+— sequentially and self-managed — until the goal is met, it is genuinely blocked, or the
+user says stop.
 
-The loop is **generic and agnostic**: the engine and its cognition are identical for every
-project; a single declarative [project profile](references/project-profile.md) supplies
-what to optimize, what to examine, how to run it, and when to stop. It explores the
-project across **all fronts** — audit, discover, research, diagnose, debug, improve,
-harden, performance, pipeline, knowledge, planning, orientation — deciding the next step
-from accumulated evidence, never arbitrarily. See the [front taxonomy](references/front-taxonomy.md),
-the [dispatch policy](references/dispatch-policy.md), the [coverage ledger](references/coverage-ledger.md),
-the [pipeline contract](references/pipeline-contract.md), and the [runner contract](references/runner-contract.md).
+The loop is **generic, agnostic, and portable**: it is this skill plus the project's state
+files. Nothing external is installed or trusted. It explores the project across **all
+fronts** — orient, discover, audit, diagnose, research, debug, improve, harden, performance,
+pipeline, knowledge, plan — deciding the next step from accumulated evidence, never
+arbitrarily. See the [in-session loop](references/in-session-loop.md),
+[front taxonomy](references/front-taxonomy.md), [dispatch policy](references/dispatch-policy.md),
+[coverage ledger](references/coverage-ledger.md), [pipeline contract](references/pipeline-contract.md),
+and [project profile](references/project-profile.md).
 
 ## Operating Contract
 
-- **Single-Sentence Autonomous Activation**: The user specifies only the objective and
-  optional bounds. Never pause for intermediate instructions, ask where files are, or ask
-  whether to run baselines. Derive all context autonomously.
+- **Single-Sentence Autonomous Activation**: The user specifies only the objective. Never
+  pause for intermediate instructions, ask where files are, or ask whether to run baselines.
+  Derive all context autonomously.
 - **Zero Conversational Chatter**: Output only concise progress summaries, verified
-  quantitative deltas, and atomic git commit references.
+  quantitative deltas, and atomic git commit references. The journal holds the detail.
 - **Profile-Driven Boot**: Read the [project profile](references/project-profile.md)
   (`docs/knowledge/profile.yaml`); if absent, bootstrap the wiki and run the knowledge
   skill's capability-discovery protocol, then seed `docs/knowledge/index.md`,
-  `capabilities.md`, and the profile itself. Load `capabilities.md` so tool selection is
-  deliberate.
+  `capabilities.md`, and the profile. Load `capabilities.md` so tool selection is deliberate.
+- **Sequential and Continuous**: Perform one atomic step per iteration, persist it, and
+  continue immediately. Never yield while actionable work remains — see
+  [in-session loop](references/in-session-loop.md).
 - **Coverage Guarantee**: Maintain the [coverage ledger](references/coverage-ledger.md):
-  every required front/sub-axis must reach a terminal status (COVERED-SOUND,
-  COVERED-EXHAUSTED, or BLOCKED-EXTERNAL with a reason). A metric may not be blamed while
-  any required axis is unexamined.
+  every required front/sub-axis must reach a terminal status. A metric may not be blamed
+  while any required axis is unexamined.
 - **Evidence-Based Dispatch**: Choose the next move with the [dispatch policy](references/dispatch-policy.md)
   — defect > uncovered front > largest diagnosed gap > structural candidate > parameter
   (last) > hygiene. Reason from data, code, wiki, and prior outcomes; never act without
@@ -53,22 +55,24 @@ the [pipeline contract](references/pipeline-contract.md), and the [runner contra
 - **Continuous Knowledge Compounding**: For every accepted or rejected candidate, record
   the finding, append the decision, update `capabilities.md` with any new surface, and push
   upstream. Rejections and inert results are knowledge too.
-- **Failure Recovery & Backoff**: If a candidate fails either gate, revert to the baseline
-  commit, record the failure mode, and proceed to the next hypothesis.
+- **Failure Recovery**: If a candidate fails either gate, revert to the baseline, record the
+  failure mode, and proceed to the next hypothesis.
+- **Delegation (director is the only writer)**: Delegate breadth and heavy analysis to
+  subagents and consume only bounded summaries; the main session applies every change.
 
 ---
 
 ## The Execution Cycle
 
 ```
-1. Orient          -- profile + knowledge + capabilities; reproduce the baseline
-2. Dispatch        -- choose the next front/move by the dispatch policy
+1. Orient          -- profile + knowledge + capabilities; ensure a current baseline
+2. Dispatch        -- choose the next front/step by the dispatch policy
 3. Diagnose        -- run the pipeline; localize the dominant gap (no guessing)
 4. Candidate       -- one bounded, falsifiable change; snapshot to git
 5. Evaluate+Gate   -- pipeline run; objective + invariant gates
 6. Compound        -- adopt (commit+push) or revert; update knowledge AND the coverage ledger
-7. Repeat          -- immediately; stop only on completion, coverage-complete, or budget
+7. Continue        -- immediately; stop only when the goal is met, blocked, or the user stops
 ```
 
-Detailed lifecycle mechanics, including the front-driven loop and coverage semantics, are
+Full lifecycle mechanics, including the sequential in-session loop and resume semantics, are
 in the [loop protocol](references/loop-protocol.md).

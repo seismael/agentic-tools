@@ -34,13 +34,12 @@ reached a terminal status before the loop may finish. See
 [coverage ledger](../../skills/loop/references/coverage-ledger.md),
 [pipeline contract](../../skills/loop/references/pipeline-contract.md),
 [project profile](../../skills/loop/references/project-profile.md), and the
-[runner contract](../../skills/loop/references/runner-contract.md).
+[in-session loop](../../skills/loop/references/in-session-loop.md).
 
-A host drives it non-stop with the reference runner (bundled at
-`skills/loop/scripts/loop_runner`) or its own binding: one bounded agent session per step,
-a journal, and gates that refuse a premature finish. Vendor the runner into a host with
-`python tools/vendor_loop_runner.py --to <host>/loop_runner` (pinned and drift-checked with
-`--check`).
+The loop runs **in-session**: the agent is the engine, taking one atomic step at a time and
+continuing until the goal is met or it is stopped. Its only machinery is durable state in
+the project (`goal.json`, `coverage.json`, `journal.jsonl`, `issues.jsonl`) — no external
+process, daemon, CLI, or plugin. Nothing to install; nothing outside the repository.
 
 ---
 

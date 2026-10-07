@@ -14,7 +14,7 @@ Portable skills for making AI agents more effective, reliable, and economical th
 
 Use Loop to run autonomous, endless, goal-directed optimization cycles on any codebase. Use Audit to analyze domain risks and produce structured plans. Use Knowledge to preserve repository facts and decisions across sessions. See [Autonomous Optimization Guide](docs/guides/autonomous-loop.md) for cross-platform agent execution patterns.
 
-Loop is generic and agnostic: a single project profile (`docs/knowledge/profile.yaml`) supplies the goal, fronts, pipeline, and boundaries; a coverage ledger proves every front/sub-axis was examined; the step contract is rendered from the profile (no domain text in the engine); and a bundled, drift-checked runner lets any host drive it non-stop.
+Loop is generic and agnostic: a single project profile (`docs/knowledge/profile.yaml`) supplies the goal, fronts, pipeline, and boundaries, and a coverage ledger proves every front/sub-axis was examined. It runs entirely in-session — a sequential, self-managed agent loop with durable project state and no external process, daemon, CLI, or plugin to install.
 
 All prioritize performance and cost effectiveness: useful completed work per input/output consumption, total cost, and elapsed time, while preserving required correctness and reliability. They support research, writing, analysis, design, operations, and engineering. Loop and Audit optimize the project itself; Characterize and Enhance improve the agent setup and its usage; Knowledge compounds verified project facts.
 

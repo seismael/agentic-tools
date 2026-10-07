@@ -1,9 +1,9 @@
 # Loop Protocol: Autonomous Continuous Optimization Engine
 
-Detailed operational mechanics for executing goal-directed, endless autonomous
-optimization loops across any codebase. The engine is generic; the
+Detailed operational mechanics for executing a goal-directed, endless, autonomous
+optimization loop **in-session**. The engine is generic and portable; the
 [project profile](../assets/templates/profile.template.yaml) supplies every project
-specific.
+specific. The loop itself is defined in the [in-session loop](in-session-loop.md).
 
 ---
 
@@ -12,25 +12,28 @@ specific.
 From the profile (or a supplied goal):
 
 1. **Target Objective** — the scalar/vector `metric` to optimize (read from the profile).
-2. **Operational Constraints** — `modes`, `boundaries`, time/budget, stop criteria.
+2. **Operational Constraints** — `modes`, `boundaries`, stop criteria.
 3. **Repository Context** — never ask the user for paths. Read `docs/knowledge/index.md`,
    then `capabilities.md`, then the profile. If the profile is absent, bootstrap it.
 
+Write the objective and its sub-goals to `goal.json` under the profile's `paths.loop`.
+
 ---
 
-## 2. The Front-Driven Pipeline
+## 2. The Front-Driven, Sequential Loop
 
-The loop is not a single linear pass; it is a dispatcher over **fronts** (see the
-[front taxonomy](front-taxonomy.md)).
+The loop is a dispatcher over **fronts** (see the [front taxonomy](front-taxonomy.md)),
+executed one atomic step at a time, continuously, inside the session.
 
 ### Step 1: Orient
-- Confirm `git rev-parse HEAD` / `git status`; read the profile and the coverage ledger.
+- Confirm the repository state (branch, clean/dirty) and read the profile, `goal.json`, the
+  [coverage ledger](coverage-ledger.md), and the journal tail.
 - If no recent baseline artifact exists, run the profile's `evaluate` stage once to
   reproduce ground truth. Record it in the `orient` front.
 
 ### Step 2: Dispatch
-- Apply the [dispatch policy](dispatch-policy.md): pick the front and sub-axis that most
-  advances the goal. Update `next_moves.json` with ranked candidates + kill-criteria.
+- Apply the [dispatch policy](dispatch-policy.md): pick the single step that most advances
+  the goal. Update the ranked next moves (in `goal.json` or a sibling file).
 
 ### Step 3: Diagnose (for value fronts)
 - Run the relevant pipeline `diagnose` stage; consume only byte-bounded projections
@@ -47,16 +50,18 @@ The loop is not a single linear pass; it is a dispatcher over **fronts** (see th
 - **Gate B (Invariants)**: every boundary/axiom/limit test passes.
 
 ### Step 6: Decide & Compound
-- **Pass**: write the finding, append the decision, update `capabilities.md`, push, and
-  mark the coverage sub-axis `COVERED-SOUND`/adopted. The candidate becomes the baseline.
+- **Pass**: write the finding, append the decision, update `capabilities.md`, push, and mark
+  the coverage sub-axis adopted.
 - **Fail**: revert, record the failure mode (an *inert* result is recorded, never adopted),
   and mark the axis `COVERED-EXHAUSTED` if the frontier is proven exhausted.
-- Always update the [coverage ledger](coverage-ledger.md) for the axis just examined.
+- Always update the [coverage ledger](coverage-ledger.md) and append a `journal.jsonl`
+  record for the step just taken.
 
-### Step 7: Endless Recurrence
-- Proceed immediately to Step 2. Stop only when: the goal `target` is met **and** coverage
-  is complete; coverage is complete with the frontier exhausted; the operator writes
-  `STOP`; or a budget fires. A `finalize.json` is accepted only under those conditions.
+### Step 7: Continue (Endless Recurrence)
+- Persist the step, then **immediately** go to Step 2. Do not stop between steps.
+- Stop only when: the goal `target` is met **and** coverage is complete; an actionable issue
+  leaves you genuinely blocked (record `status: BLOCKED` with the reason); or the user says
+  stop.
 
 ---
 
@@ -66,12 +71,10 @@ The loop may conclude only when **all** hold:
 
 1. The [coverage ledger](coverage-ledger.md) is complete (every required axis terminal; no
    open defect).
-2. The issue queue has no open actionable item.
-3. Delivery is clean: working tree clean and `HEAD == origin/main` (everything adopted is
-   committed and pushed).
+2. The issue ledger has no open actionable item.
+3. The goal `target` is met (or the frontier is provably exhausted with evidence).
 
-Otherwise the finalize is refused and the loop continues. Repeated refusal, repeated
-invocation errors, or a stalled journal fail closed for operator attention.
+On completion, set `goal.json` `status: DONE`, summarize the verified deltas, and yield.
 
 ## 4. Boundaries
 

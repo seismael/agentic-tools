@@ -15,7 +15,7 @@
     "Selects the next move by the dispatch policy (defect > uncovered front > largest diagnosed gap > structural > parameter last), never a groundless sweep.",
     "Uses only the declared pipeline stages and byte-bounded artifacts; does not hand-roll analysis.",
     "Adopts only dual-gated changes (objective delta > 0 AND invariants green); records rejections/inert results instead of adopting them.",
-    "Writes finalize.json only when coverage is complete, no actionable issue is open, and HEAD == origin/main."
+    "Runs in-session and sequentially, one atomic step at a time, persisting each step to the journal and continuing until the goal is met, it is blocked, or the user stops it."
   ],
   "anti_expected": [
     "Asking the user where the project files are.",
@@ -23,5 +23,5 @@
     "Declaring completion while a required front is Unexplored or a defect is open.",
     "Weakening determinism, no-lookahead, or a safety boundary."
   ],
-  "evidence": "Expected behavior is deterministic and reproducible from the fixture plus the loop skill; structural validity does not certify a live host integration."
+  "evidence": "Expected behavior is deterministic and reproducible from the fixture plus the loop skill; the loop is self-contained (skill + on-disk state), so no host integration is required."
 }
