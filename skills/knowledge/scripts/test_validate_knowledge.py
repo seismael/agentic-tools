@@ -113,6 +113,41 @@ class TestValidateKnowledge(unittest.TestCase):
         errors = validate_knowledge_base(self.kb_dir)
         self.assertEqual(errors, [])
 
+    def test_loop_artifacts_valid(self) -> None:
+        (self.kb_dir / "index.md").write_text("# MOC\n", encoding="utf-8")
+        (self.kb_dir / "coverage.json").write_text(
+            '{"schema": "loop.coverage.v1", "fronts": {"debug": {"status": "UNEXPLORED"}}}',
+            encoding="utf-8",
+        )
+        (self.kb_dir / "profile.json").write_text(
+            '{"schema": "loop.profile.v1"}', encoding="utf-8"
+        )
+        errors = validate_knowledge_base(self.kb_dir)
+        self.assertEqual(errors, [])
+
+    def test_loop_coverage_bad_schema(self) -> None:
+        (self.kb_dir / "index.md").write_text("# MOC\n", encoding="utf-8")
+        (self.kb_dir / "coverage.json").write_text(
+            '{"schema": "wrong", "fronts": {}}', encoding="utf-8"
+        )
+        errors = validate_knowledge_base(self.kb_dir)
+        self.assertTrue(any("coverage.json schema must be" in e for e in errors))
+        self.assertTrue(any("non-empty 'fronts'" in e for e in errors))
+
+    def test_loop_coverage_invalid_json(self) -> None:
+        (self.kb_dir / "index.md").write_text("# MOC\n", encoding="utf-8")
+        (self.kb_dir / "coverage.json").write_text("{not json", encoding="utf-8")
+        errors = validate_knowledge_base(self.kb_dir)
+        self.assertTrue(any("coverage.json is not valid JSON" in e for e in errors))
+
+    def test_loop_profile_bad_schema(self) -> None:
+        (self.kb_dir / "index.md").write_text("# MOC\n", encoding="utf-8")
+        (self.kb_dir / "profile.json").write_text(
+            '{"schema": "nope"}', encoding="utf-8"
+        )
+        errors = validate_knowledge_base(self.kb_dir)
+        self.assertTrue(any("profile.json schema must be" in e for e in errors))
+
 
 if __name__ == "__main__":
     unittest.main()

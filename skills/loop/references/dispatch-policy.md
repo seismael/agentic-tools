@@ -1,0 +1,51 @@
+# Dispatch Policy: Deciding What To Do Next
+
+At every step the loop answers one question: **given everything accumulated so far, what
+single move most advances the goal right now?** The answer must be *reasoned from
+evidence*, never arbitrary. "Unrestricted" means the loop may pursue any admissible
+direction the data supports — it does **not** mean acting without grounds. Flipping
+parameters, guessing, or jumping to a candidate before diagnosis is exactly the "stupid
+next step" the policy forbids.
+
+## Priority ladder (highest first)
+
+1. **Open defect or safety hole.** Anything shown incorrect, unsafe, or inconsistent in
+   any front. A defect outranks all improvement work.
+2. **Uncovered front.** An `UNEXPLORED` front (breadth guarantee) — examine it enough to
+   reach a terminal status, then return to value work.
+3. **Largest diagnosed opportunity.** The single biggest localized gap on the goal
+   metric, per cell, from a real diagnostic artifact — never from a hunch.
+4. **Structural candidate.** A bounded change to *mechanism* (not a constant) that the
+   diagnosis indicates; verified against the goal metric and invariants.
+5. **Parameter candidate — last.** A constant/config change, and only when a diagnosis
+   shows it binds the effective system. An inert (execution-identical) result is a
+   rejection, recorded, never "adopted".
+6. **Hygiene.** Knowledge compounding, pipeline/integrity, docs — when nothing
+   value-bearing is actionable, or as the mandated close of any accepted change.
+
+## Tie-breaks
+
+- Expected value: the move with the larger credible upside (or larger risk removed).
+- Cost: prefer the cheaper move when expected values are close.
+- Irreversibility: prefer a reversible move when still uncertain; snapshot before any
+  long-running evaluation.
+- Freshness: prefer the front that has been untouched longest among equals.
+
+## Reasoning discipline
+
+- **Diagnose before you change.** A candidate without a reproducing artifact is
+  speculation; record it as a hypothesis, not a change.
+- **One bounded, falsifiable change per step**, with a stated kill-criterion *before*
+  running anything. If the kill-criterion fires, revert and record — do not spin.
+- **Learn from rejections.** An inert or regressed candidate is knowledge: record it and
+  re-rank. Repeatedly re-testing the same rejected class is a policy violation.
+- **Respect the bounded frontier.** When a class of candidates is empirically exhausted,
+  say so with evidence and move to a higher-leverage class.
+
+## Anti-patterns (explicitly rejected)
+
+- Random or ungrounded parameter sweeps; "try things and see".
+- Adopting a change that is execution-identical (inert) or that regresses any cell.
+- Declaring success, or blaming the goal metric, while a front is unexamined.
+- Weakening an invariant, gate, or safety limit to make a metric look better.
+- Producing numbers the pipeline cannot reproduce from a committed snapshot.

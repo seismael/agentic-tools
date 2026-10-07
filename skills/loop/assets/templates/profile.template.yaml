@@ -1,0 +1,47 @@
+# Loop project profile — copy to <project>/docs/knowledge/profile.yaml and edit.
+# Everything project-specific lives here; the loop engine stays identical for every repo.
+schema: loop.profile.v1
+project: "<project-name>"
+goal: "<one-sentence objective the loop optimizes>"
+metric: "<the objective scalar/vector and how to read it>"
+target: null            # optional success predicate; enables goal-completion when met
+
+modes: [eval]           # allowed run modes; never list a forbidden/production mode
+
+paths:
+  loop: ".<project>/reports/research/loop"   # journal root
+  coverage: "docs/knowledge/coverage.json"
+  knowledge: "docs/knowledge"
+
+boundaries:             # the fixed safety envelope the loop never weakens
+  - "deterministic, reproducible execution"
+  - "no look-ahead"
+  - "all mandatory risk/safety gates enforced"
+
+fronts:                 # coverage surface; names below are examples — use the project's own
+  orient:   {required: true}
+  discover: {required: true}
+  audit:    {required: true}
+  diagnose: {required: true, sub_axes: [<cell-or-metric>]}
+  research: {required: false}
+  debug:    {required: true, sub_axes: [<axis-a>, <axis-b>]}
+  improve:  {required: true, sub_axes: [<axis-a>, <axis-b>]}
+  harden:   {required: true}
+  performance: {required: false}
+  pipeline: {required: true}
+  knowledge: {required: true}
+  plan:     {required: true}
+
+pipeline:               # canonical ordered stages (see references/pipeline-contract.md)
+  - {id: evaluate, kind: evaluate, command: "<cli>", artifact: "<path>"}
+  - {id: diagnose, kind: diagnose, command: "<cli>", artifact: "<path>"}
+  # ... acquire / evidence / experiment / record / view
+
+gates:
+  objective: "<how a candidate is shown to improve the goal>"
+  invariants: "<test/lint/type commands that must remain green>"
+
+completion:
+  rule: "<goal met | coverage complete | budget>"
+  require_coverage: true
+  require_delivery: true

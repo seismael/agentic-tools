@@ -19,6 +19,29 @@ The Autonomous Optimization Loop is a structured, 5-stage engineering pipeline d
 5. **Stage 5: Compounding Knowledge Persistence & Atomic Publication**
    - The agent logs findings to `docs/audit/findings/`, records decisions in `docs/knowledge/decisions.md`, updates `known_defects.md`, and pushes commits upstream.
 
+### 1.1 Generic, agnostic, and front-driven
+
+The loop engine is identical for every repository; a single declarative **project profile**
+(`docs/knowledge/profile.yaml`) supplies what to optimize, what to examine, how to run it,
+and when to stop. The loop explores the project across **all fronts** — audit, discover,
+research, diagnose, debug, improve, harden, performance, pipeline, knowledge, plan,
+orientation — choosing the next move from accumulated evidence (defect > uncovered front >
+largest diagnosed gap > structural candidate > parameter last), never a groundless sweep.
+A **coverage ledger** (`docs/knowledge/coverage.json`) proves every required front/sub-axis
+reached a terminal status before the loop may finish. See
+[front taxonomy](../../skills/loop/references/front-taxonomy.md),
+[dispatch policy](../../skills/loop/references/dispatch-policy.md),
+[coverage ledger](../../skills/loop/references/coverage-ledger.md),
+[pipeline contract](../../skills/loop/references/pipeline-contract.md),
+[project profile](../../skills/loop/references/project-profile.md), and the
+[runner contract](../../skills/loop/references/runner-contract.md).
+
+A host drives it non-stop with the reference runner (bundled at
+`skills/loop/scripts/loop_runner`) or its own binding: one bounded agent session per step,
+a journal, and gates that refuse a premature finish. Vendor the runner into a host with
+`python tools/vendor_loop_runner.py --to <host>/loop_runner` (pinned and drift-checked with
+`--check`).
+
 ---
 
 ## 2. Environment-Specific Instructions

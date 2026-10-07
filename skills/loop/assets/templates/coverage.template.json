@@ -1,0 +1,22 @@
+{
+  "schema": "loop.coverage.v1",
+  "loop_id": "<loop-id>",
+  "updated_at": "<ISO-8601>",
+  "complete": false,
+  "open_defect": false,
+  "counts": {"verified_sound": 0, "covered_exhausted": 0, "open": 0},
+  "fronts": {
+    "debug": {
+      "status": "UNEXPLORED",
+      "sub_axes": {
+        "<axis-a>": {"status": "UNEXPLORED", "evidence": ""}
+      }
+    },
+    "improve": {
+      "status": "UNEXPLORED",
+      "sub_axes": {
+        "<axis-a>": {"status": "UNEXPLORED", "evidence": ""}
+      }
+    }
+  }
+}

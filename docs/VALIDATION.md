@@ -10,6 +10,7 @@ python -B -m unittest discover -s skills/characterize/scripts -p 'test_*.py' -v
 python -B -m unittest discover -s skills/enhance/scripts -p 'test_*.py' -v
 python -B -m unittest discover -s skills/audit/scripts -p 'test_*.py' -v
 python -B -m unittest discover -s skills/knowledge/scripts -p 'test_*.py' -v
+python -B -m unittest discover -s skills/loop/scripts -p 'test_*.py' -v
 python -B -m unittest discover -s tests -p 'test_*.py' -v
 ```
 

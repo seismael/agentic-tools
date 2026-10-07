@@ -16,6 +16,7 @@ Checks:
 from __future__ import annotations
 
 import argparse
+import json
 import os
 from pathlib import Path
 import re
@@ -23,6 +24,10 @@ import sys
 
 MAX_INDEX_BYTES = 2048
 MAX_LEAF_BYTES = 3072
+
+# Optional autonomous-loop artifacts (see the loop skill). Validated only if present.
+LOOP_COVERAGE_SCHEMA = "loop.coverage.v1"
+LOOP_PROFILE_SCHEMA = "loop.profile.v1"
 
 MD_LINK_PATTERN = re.compile(r"\[([^\]]+)\]\(([^)]+\.md)(?:#[^)]+)?\)")
 WIKI_LINK_PATTERN = re.compile(r"\[\[([^\]|]+)(?:\|[^\]]+)?\]\]")
@@ -47,6 +52,45 @@ def extract_links(content: str) -> set[str]:
         targets.add(name)
 
     return targets
+
+
+def _load_json_object(path: Path, label: str, errors: list[str]) -> dict | None:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"{label} is not valid JSON: {exc}")
+        return None
+    if not isinstance(payload, dict):
+        errors.append(f"{label} must contain a JSON object at the top level")
+        return None
+    return payload
+
+
+def validate_loop_artifacts(kb_dir: Path) -> list[str]:
+    """Validate optional loop artifacts (coverage.json / profile.json) if present.
+
+    These belong to the autonomous-loop skill; absence is fine. A YAML profile is
+    authoritatively validated by the loop runner (which has PyYAML), so only the JSON
+    form is checked here to keep this validator dependency-free.
+    """
+    errors: list[str] = []
+
+    coverage = kb_dir / "coverage.json"
+    if coverage.is_file():
+        payload = _load_json_object(coverage, "coverage.json", errors)
+        if payload is not None:
+            if payload.get("schema") != LOOP_COVERAGE_SCHEMA:
+                errors.append(f"coverage.json schema must be '{LOOP_COVERAGE_SCHEMA}'")
+            if not isinstance(payload.get("fronts"), dict) or not payload.get("fronts"):
+                errors.append("coverage.json must contain a non-empty 'fronts' mapping")
+
+    profile = kb_dir / "profile.json"
+    if profile.is_file():
+        payload = _load_json_object(profile, "profile.json", errors)
+        if payload is not None and payload.get("schema") != LOOP_PROFILE_SCHEMA:
+            errors.append(f"profile.json schema must be '{LOOP_PROFILE_SCHEMA}'")
+
+    return errors
 
 
 def validate_knowledge_base(directory: Path | str) -> list[str]:
@@ -102,6 +146,8 @@ def validate_knowledge_base(directory: Path | str) -> list[str]:
                 errors.append(
                     f"Broken link in {name}: target '{target}' does not exist"
                 )
+
+    errors.extend(validate_loop_artifacts(kb_dir))
 
     return errors
 
