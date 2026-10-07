@@ -31,7 +31,7 @@ In Antigravity CLI (`agy`) or Antigravity IDE:
    Ensure `skills/audit` and `skills/knowledge` are linked or placed in `~/.gemini/antigravity-cli/skills/` or `.agents/skills/`.
 2. **Initial Prompt**:
    ```
-   Execute the autonomous optimization loop on this repository following skills/audit/references/autonomous-loop.md.
+   Execute the autonomous optimization loop on this repository following skills/loop/SKILL.md.
    1. Read docs/knowledge/index.md to orient paths and invariants.
    2. Diagnose current performance gaps against theoretical ceiling.
    3. Formulate minimal candidates, committing working tree before evaluating.
@@ -54,7 +54,7 @@ In OpenCode:
 2. **Initial Prompt**:
    ```
    Run the autonomous optimization loop for this project:
-   - Refer to skills/audit/references/autonomous-loop.md for the 5-stage protocol.
+   - Refer to skills/loop/SKILL.md for the 5-stage protocol.
    - Use docs/knowledge/ for repository facts, data topology, and invariants.
    - Always commit candidate changes before running background evaluations.
    - Verify both primary metric gain and invariant test passes.
@@ -75,7 +75,7 @@ In Claude Code (`claude` CLI):
    Copy or link `skills/audit` and `skills/knowledge` into `.claude/skills/` or reference them directly in `CLAUDE.md`.
 2. **Initial Prompt**:
    ```
-   Start the autonomous optimization cycle following skills/audit/references/autonomous-loop.md.
+   Start the autonomous optimization cycle following skills/loop/SKILL.md.
    Begin by checking docs/knowledge/index.md, run the baseline evaluation, and identify the top opportunity gap.
    Ensure every candidate is committed before running evaluations, tests pass, and knowledge leaves are updated.
    ```
@@ -93,7 +93,7 @@ In OpenAI Codex CLI:
    Install via `python tools/install_skill.py --skill audit --to ~/.codex/skills/audit`.
 2. **Command / Prompt**:
    ```
-   $audit Run the autonomous optimization loop following skills/audit/references/autonomous-loop.md.
+   $audit Run the autonomous optimization loop following skills/loop/SKILL.md.
    Focus on maximizing the target objective while strictly upholding project invariants.
    Commit working tree before each evaluation run and document all accepted findings.
    ```

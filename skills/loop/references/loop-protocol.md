@@ -10,7 +10,7 @@ When receiving a single-sentence goal (e.g. `/loop improve net profit across all
 
 1. **Extract Target Objective**: Identify the primary scalar or vector metric to optimize (e.g., Net PnL, Profit Factor, Latency, Throughput, Error Rate).
 2. **Extract Operational Constraints**: Identify any time budget, stop criteria, or safety bounds. If no time budget is given, iterate continuously until major opportunity gaps are exhausted or no further positive candidate can be validated.
-3. **Resolve Repository Context**: Never ask the user where directories or files are located. Read `docs/knowledge/index.md` first.
+3. **Resolve Repository Context**: Never ask the user where directories or files are located. Read `docs/knowledge/index.md` first, then `docs/knowledge/capabilities.md` to select tools deliberately.
 
 ---
 
@@ -19,6 +19,7 @@ When receiving a single-sentence goal (e.g. `/loop improve net profit across all
 ### Step 1: Baseline Verification
 - Check current git commit hash (`git rev-parse HEAD`) and working tree status (`git status`).
 - Check `docs/knowledge/decisions.md` to establish current champion baseline metrics.
+- Check `docs/knowledge/capabilities.md` for the CLI/engine/verification surfaces that produce those metrics.
 - If no recent evaluation artifact exists, run the baseline evaluation headless once to establish ground truth.
 
 ### Step 2: Gap Diagnosis & Hypothesis Formulation
@@ -45,7 +46,7 @@ When receiving a single-sentence goal (e.g. `/loop improve net profit across all
 - **If Both Gates Pass**:
   1. Write structured finding in `docs/audit/findings/F-XXX.md`.
   2. Update `docs/audit/audit.json`.
-  3. Append the accepted decision to `docs/knowledge/decisions.md`.
+  3. Append the accepted decision to `docs/knowledge/decisions.md`; append any newly discovered command, engine, or data surface to `docs/knowledge/capabilities.md`.
   4. Push the commit upstream: `git push origin <branch>`.
   5. The new candidate becomes the new active baseline.
 - **If Either Gate Fails**:

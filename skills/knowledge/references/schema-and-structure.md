@@ -56,3 +56,15 @@ Must contain:
   - `Root Cause`: Dense causal summary.
   - `Symptom`: What breaks if this occurs.
   - `Resolution / Rule`: What pattern must be used instead.
+
+---
+
+## 7. `capabilities.md`
+Must contain:
+- `# Project Capabilities & Tooling Registry`
+- **Command-Line Surfaces**: table `| Capability | Invoke | Purpose |`.
+- **Engines, Libraries & Subsystems**: table `| Component | Path | Public entry | Purpose |`.
+- **Scripts & Task Runners**: table `| Name | Invoke | Purpose |`.
+- **Data Sources & Artifacts**: table `| Source | Path | Format / mutability |` (cross-link `data_topology.md`; do not duplicate it).
+- **Verification Lanes**: table `| Lane | Command | Scope |`.
+- Populate via [capability discovery](../references/capability-discovery.md); bound to 3 KB and split into `capabilities/<topic>.md` sub-leaves when exceeded.

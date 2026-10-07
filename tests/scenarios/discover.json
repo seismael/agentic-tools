@@ -1,0 +1,19 @@
+{
+  "format_version": 1,
+  "note": "Synthetic prompt and source fixture for manual host-agent evaluation of capability discovery. Materialize it in its own disposable directory (optionally a git repository). Give a fresh agent only the request, the directory, and the installed Knowledge (and Loop) skill path. Do not include the evaluation rubric in its prompt. No real repository, credential, or user data is included.",
+  "scenarios": [
+    {
+      "id": "capability-inventory",
+      "request": "Use the Knowledge skill to initialize the project knowledge base for this directory, then discover the project's executable capabilities and record them in capabilities.md. Introspect the CLI with --help rather than guessing; do not execute any mutating command. Include command-line surfaces, engines/libraries, scripts, data sources, and verification lanes. Keep the wiki token-bounded and run validate_knowledge.py at the end. Report the exact files you wrote and the validator result.",
+      "files": {
+        "README.md": "# Ledger demo\n\nA synthetic double-entry ledger service with a small CLI. `python -m ledger --help` lists the command groups. Inputs are CSV journals under `data/journals/`; generated reports land in `reports/`. Unit tests use `python -m unittest`.\n",
+        "pyproject.toml": "[project]\nname = \"ledger-demo\"\nversion = \"0.1.0\"\n\n[project.scripts]\nledger = \"ledger.__main__:main\"\n",
+        "ledger/__main__.py": "import argparse\n\n\ndef main(argv=None):\n    parser = argparse.ArgumentParser(prog=\"ledger\", description=\"Double-entry ledger\")\n    sub = parser.add_subparsers(dest=\"command\", required=True)\n    for name, purpose in ((\"balance\", \"show account balances\"), (\"post\", \"post a journal entry\"), (\"reconcile\", \"reconcile against a statement\")):\n        child = sub.add_parser(name, help=purpose)\n        child.add_argument(\"path\", nargs=\"?\")\n    args = parser.parse_args(argv)\n    print(f\"{args.command}: ok\")\n    return 0\n\n\nif __name__ == \"__main__\":\n    raise SystemExit(main())\n",
+        "ledger/ledger.py": "from decimal import Decimal\n\n\ndef post(entries):\n    total = sum((Decimal(str(entry[\"amount\"])) for entry in entries), Decimal(\"0\"))\n    if total != Decimal(\"0\"):\n        raise ValueError(\"unbalanced journal\")\n    return entries\n",
+        "tools/import_statement.py": "import sys\n\n\ndef main(path):\n    print(f\"importing {path}\")\n    return 0\n\n\nif __name__ == \"__main__\":\n    raise SystemExit(main(sys.argv[1] if len(sys.argv) > 1 else \"statement.csv\"))\n",
+        "data/journals/2024-01.csv": "account,amount\ncash,100\nrevenue,-100\n",
+        "tests/test_ledger.py": "import unittest\n\nfrom ledger.ledger import post\n\n\nclass LedgerTests(unittest.TestCase):\n    def test_balanced(self):\n        self.assertEqual(len(post([{\"amount\": 1}, {\"amount\": -1}])), 2)\n\n    def test_unbalanced(self):\n        with self.assertRaises(ValueError):\n            post([{\"amount\": 1}])\n\n\nif __name__ == \"__main__\":\n    unittest.main()\n"
+      }
+    }
+  ]
+}

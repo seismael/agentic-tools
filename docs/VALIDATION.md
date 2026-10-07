@@ -8,7 +8,8 @@ From the repository root with Python 3.10+:
 python tools/check_release.py
 python -B -m unittest discover -s skills/characterize/scripts -p 'test_*.py' -v
 python -B -m unittest discover -s skills/enhance/scripts -p 'test_*.py' -v
-python -B -m unittest discover -s skills/audit-project/scripts -p 'test_*.py' -v
+python -B -m unittest discover -s skills/audit/scripts -p 'test_*.py' -v
+python -B -m unittest discover -s skills/knowledge/scripts -p 'test_*.py' -v
 python -B -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
@@ -88,6 +89,10 @@ Observed on 2026-10-04: fresh-agent A1 correctly traced the public guard, reprod
 A separate fresh agent then received only a disposable clone of the committed F-001 handoff and explicit implementation authorization. It completed the specified calculation/caller/test/documentation changes without an unresolved design decision. All 6 resulting unit tests and the packet's direct acceptance script passed; CSV source remained unchanged. Completion evidence and done state were recorded locally. This single small execution demonstrates this packet's usability, not universal implementation reliability. Reproduce by cloning A2 after its accepted F-001 checkpoint, supplying only the audit index and implementation authorization, and inspecting source diffs, checks and completion records.
 
 For a live smoke test, use an explicitly authorized disposable GitHub repository. Record the starting source commit, installed host/version, selected branch and artifact directory, source-read coverage, finding decision, local artifact validation, remote commit SHA, and read-back verification. Confirm that only audit artifacts changed. Exercise a changed-source continuation and a blocked write or protected branch, preserving useful work without falsely claiming publication. Keep the audit's source baseline distinct from the later documentation commit.
+
+## Capability discovery scenario
+
+Raw request and synthetic source files are in [the discovery scenario fixture](../tests/scenarios/discover.json). Materialize the `capability-inventory` scenario in a disposable directory; give a fresh agent only its request, that directory, and the installed `knowledge` (and `loop`) skill path. Expected observation: boots or initializes the wiki, introspects the CLI with `--help` without running mutating commands, writes a token-bounded `capabilities.md` linked from `index.md`, and reports a passing `validate_knowledge.py` run. Structural validity does not certify that every capability was found; missing surfaces stay explicit.
 
 ## Report results compactly
 

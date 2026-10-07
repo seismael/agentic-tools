@@ -29,7 +29,7 @@ python tools/install_skill.py --skill characterize --to ~/.agents/skills/charact
 python tools/install_skill.py --skill characterize --to ~/.agents/skills/characterize
 ```
 
-The shared installer accepts any bundled skill: replace `characterize` with `enhance`, `audit`, or `knowledge` in both arguments. The example uses Codex's documented user skill directory. See [Installation](docs/INSTALLATION.md) for OpenCode, Claude Code, Gemini CLI, Antigravity CLI (`agy`), and Antigravity IDE. Python is optional for the instruction workflow; the installer and bundled helpers require it.
+The shared installer accepts any bundled skill: replace `characterize` with `enhance`, `audit`, `knowledge`, or `loop` in both arguments. The example uses Codex's documented user skill directory. See [Installation](docs/INSTALLATION.md) for OpenCode, Claude Code, Gemini CLI, Antigravity CLI (`agy`), and Antigravity IDE. Python is optional for the instruction workflow; the installer and bundled helpers require it.
 
 ## Use it
 

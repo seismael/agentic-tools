@@ -4,7 +4,7 @@ Install the complete selected directory under `skills/`, including its reference
 
 ## Choose a native location
 
-Locations below are documented by the respective vendors as of 2026-10-04. Replace `<skill>` with `characterize`, `enhance`, or `audit-project`. `~` means the user home directory. Project paths are relative to the relevant workspace/repository. Custom profiles and environment overrides can change locations; verify the installed host's active configuration.
+Locations below are documented by the respective vendors as of 2026-10-04. Replace `<skill>` with `characterize`, `enhance`, `audit`, `knowledge`, or `loop`. `~` means the user home directory. Project paths are relative to the relevant workspace/repository. Custom profiles and environment overrides can change locations; verify the installed host's active configuration.
 
 | Host | User/global skill directory | Project skill directory | Explicit use |
 |---|---|---|---|
@@ -37,11 +37,11 @@ python tools/install_skill.py --skill enhance --to /path/to/project/.opencode/sk
 python tools/install_skill.py --skill enhance --to /path/to/project/.opencode/skills/enhance
 ```
 
-Audit Project example:
+Audit example:
 
 ```sh
-python tools/install_skill.py --skill audit-project --to ~/.agents/skills/audit-project --check
-python tools/install_skill.py --skill audit-project --to ~/.agents/skills/audit-project
+python tools/install_skill.py --skill audit --to ~/.agents/skills/audit --check
+python tools/install_skill.py --skill audit --to ~/.agents/skills/audit
 ```
 
 PowerShell example for Codex:

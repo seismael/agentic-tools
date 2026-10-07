@@ -27,6 +27,7 @@
 | `invariants.md` | $\le 400\text{--}600$ tokens | **$3,072\text{ bytes}$** | $> 15$ mandatory rules |
 | `decisions.md` | $\le 400\text{--}600$ tokens | **$3,072\text{ bytes}$** | $> 15$ logged decisions |
 | `known_defects.md` | $\le 400\text{--}600$ tokens | **$3,072\text{ bytes}$** | $> 10$ documented bugs |
+| `capabilities.md` | $\le 400\text{--}600$ tokens | **$3,072\text{ bytes}$** | $> 30$ capabilities or $> 6$ sections |
 
 ### Sub-leaf Splitting
 When any leaf exceeds its byte ceiling:

@@ -11,12 +11,12 @@ Execute endless, autonomous, goal-directed optimization cycles on any repository
 
 - **Single-Sentence Autonomous Activation**: The user only specifies the target objective and optional bounds (e.g., time limit, target metric). Never pause, prompt for intermediate instructions, ask where files are located, or ask whether to run baselines. Derive all context autonomously.
 - **Zero Conversational Chatter**: Never emit conversational filler, status monologues, or polite preambles. Output only concise progress summaries, verified quantitative deltas, and atomic git commit references.
-- **Automatic Knowledge Booting**: Always boot from `<project>/docs/knowledge/index.md` (or `.<project>/knowledge/index.md`) if present (< 400 tokens) to orient paths, configs, invariants, and prior decisions. If absent, bootstrap it autonomously from standard templates.
+- **Automatic Knowledge Booting**: Always boot from `<project>/docs/knowledge/index.md` (or `.<project>/knowledge/index.md`) if present (< 400 tokens) to orient paths, configs, invariants, and prior decisions, then load the project's `capabilities.md` (executable-surface registry) so tool and CLI selection is deliberate. If absent, bootstrap the wiki and run the knowledge skill's capability-discovery protocol before choosing tools.
 - **Pre-Evaluation Snapshot Protocol**: Before launching long-running evaluators, benchmarks, or backtests, always stage and commit candidate changes to Git (`feat(candidate): ...`) to ensure immutable run manifests and prevent artifact collisions.
 - **Dual-Gate Verification**: Every candidate promotion requires:
   1. *Primary Metric Improvement*: Measurable positive gain in the target objective function.
   2. *Invariant Soundness*: Zero violations of project axioms, safety boundaries, or non-negotiable invariants.
-- **Continuous Knowledge Compounding**: For every accepted candidate, record the finding in `docs/audit/findings/`, append the decision to `docs/knowledge/decisions.md`, and push to upstream Git.
+- **Continuous Knowledge Compounding**: For every accepted candidate, record the finding in `docs/audit/findings/`, append the decision to `docs/knowledge/decisions.md`, append any newly discovered command, engine, or data surface to `docs/knowledge/capabilities.md`, and push to upstream Git.
 - **Failure Recovery & Backoff**: If a candidate fails either gate, immediately revert to the baseline commit, record the failure mode in `docs/knowledge/known_defects.md`, and proceed to the next hypothesis.
 
 ---
@@ -25,7 +25,7 @@ Execute endless, autonomous, goal-directed optimization cycles on any repository
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ 1. Autonomous Orientation (Read docs/knowledge/index.md)    │
+│ 1. Autonomous Orientation (index.md + capabilities.md)      │
 └──────────────────────────────┬──────────────────────────────┘
                                ▼
 ┌─────────────────────────────────────────────────────────────┐

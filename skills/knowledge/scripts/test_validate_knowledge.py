@@ -67,15 +67,35 @@ class TestValidateKnowledge(unittest.TestCase):
         self.assertTrue(any("leaf.md exceeds leaf byte ceiling" in e for e in errors))
 
     def test_broken_link(self) -> None:
-        (self.kb_dir / "index.md").write_text("# MOC\n- [[missing_leaf]]", encoding="utf-8")
+        (self.kb_dir / "index.md").write_text(
+            "# MOC\n- [[missing_leaf]]", encoding="utf-8"
+        )
         errors = validate_knowledge_base(self.kb_dir)
-        self.assertTrue(any("Broken link" in e and "missing_leaf.md" in e for e in errors))
+        self.assertTrue(
+            any("Broken link" in e and "missing_leaf.md" in e for e in errors)
+        )
 
     def test_orphan_leaf(self) -> None:
         (self.kb_dir / "index.md").write_text("# MOC\n", encoding="utf-8")
         (self.kb_dir / "orphan.md").write_text("# Orphan", encoding="utf-8")
         errors = validate_knowledge_base(self.kb_dir)
         self.assertTrue(any("Orphan leaf: 'orphan.md'" in e for e in errors))
+
+    def test_capabilities_leaf_is_indexed_and_valid(self) -> None:
+        (self.kb_dir / "index.md").write_text(
+            "# MOC\n- [Capabilities](capabilities.md)\n- [[architecture]]",
+            encoding="utf-8",
+        )
+        (self.kb_dir / "architecture.md").write_text(
+            "# Architecture\n[[index]]", encoding="utf-8"
+        )
+        (self.kb_dir / "capabilities.md").write_text(
+            "# Capabilities\n| Capability | Invoke | Purpose |\n| :--- | :--- | :--- |\n"
+            "| apex | `apex --help` | CLI driver |\n[[index]]",
+            encoding="utf-8",
+        )
+        errors = validate_knowledge_base(self.kb_dir)
+        self.assertEqual(errors, [])
 
 
 if __name__ == "__main__":

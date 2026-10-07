@@ -14,3 +14,4 @@ Welcome to the central Map of Content (MOC). To maintain extreme token frugality
 | [[invariants|System Invariants]] | Non-negotiable domain rules, safety limits, and architectural axioms | {{DATE}} |
 | [[decisions|Architectural Decisions]] | Chronological log of accepted user decisions and strategic direction | {{DATE}} |
 | [[known_defects|Known Defects]] | Confirmed architectural bugs, pitfalls, and anti-patterns to avoid | {{DATE}} |
+| [[capabilities|Capabilities]] | Executable surfaces: CLI, engines, scripts, data sources, verification lanes | {{DATE}} |
